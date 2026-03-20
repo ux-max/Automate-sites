@@ -1,0 +1,25 @@
+
+> app@0.1.0 build
+> next build
+
+▲ Next.js 16.2.0 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.7s
+  Running TypeScript ...
+Failed to type check.
+
+./src/components/Builder/Canvas.tsx:22:20
+Type error: Type '{ width?: string; height?: string; minHeight?: string; maxWidth?: string; display?: string; flexDirection?: string; justifyContent?: string; alignItems?: string; gap?: string; gridTemplateColumns?: string; ... 31 more ...; objectFit?: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
+  Types of property 'flexDirection' are incompatible.
+    Type 'string | undefined' is not assignable to type 'FlexDirection | undefined'.
+      Type 'string' is not assignable to type 'FlexDirection | undefined'.
+
+  [90m20 |[0m     [36mswitch[0m (element.[36mtype[0m) {
+  [90m21 |[0m       [36mcase[0m [32m'heading'[0m:
+[31m[1m>[0m [90m22 |[0m         [36mreturn[0m <h2 style={{ margin: [35m0[0m, ...element.styles }} suppressContentEditableWarning...
+  [90m   |[0m                    [31m[1m^[0m
+  [90m23 |[0m       [36mcase[0m [32m'text'[0m:
+  [90m24 |[0m         [36mreturn[0m <p style={{ margin: [35m0[0m, ...element.styles }} suppressContentEditableWarning ...
+  [90m25 |[0m       [36mcase[0m [32m'button'[0m:
+Next.js build worker exited with code: 1 and signal: null

@@ -1,0 +1,25 @@
+
+> app@0.1.0 build
+> next build
+
+▲ Next.js 16.2.0 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.8s
+  Running TypeScript ...
+Failed to type check.
+
+./src/components/Panels/PreviewPanel.tsx:38:31
+Type error: Type '{ width?: string; height?: string; minHeight?: string; maxWidth?: string; display?: string; flexDirection?: string; justifyContent?: string; alignItems?: string; gap?: string; gridTemplateColumns?: string; ... 31 more ...; objectFit?: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
+  Types of property 'flexDirection' are incompatible.
+    Type 'string | undefined' is not assignable to type 'FlexDirection | undefined'.
+      Type 'string' is not assignable to type 'FlexDirection | undefined'.
+
+  [90m36 |[0m       >
+  [90m37 |[0m         {page.sections.map(s => (
+[31m[1m>[0m [90m38 |[0m           <section key={s.id} style={{ ...s.styles }}>
+  [90m   |[0m                               [31m[1m^[0m
+  [90m39 |[0m             {s.elements.map(e => {
+  [90m40 |[0m               [36mif[0m (e.[36mtype[0m === [32m'heading'[0m) [36mreturn[0m <h2 key={e.id} style={{ margin: [35m0[0m, fontFami...
+  [90m41 |[0m               [36mif[0m (e.[36mtype[0m === [32m'text'[0m) [36mreturn[0m <p key={e.id} style={{ margin: [35m0[0m, ...e.styles ...
+Next.js build worker exited with code: 1 and signal: null

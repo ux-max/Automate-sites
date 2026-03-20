@@ -1,0 +1,35 @@
+
+> app@0.1.0 build
+> next build
+
+▲ Next.js 16.2.0 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./src/components/Builder/Canvas.tsx:88:15
+Expression expected
+  [90m86 |[0m             ))}
+  [90m87 |[0m           </ul>
+[31m[1m>[0m [90m88 |[0m         );    );
+  [90m   |[0m               [31m[1m^[0m
+  [90m89 |[0m       [36mdefault[0m:
+  [90m90 |[0m         [36mreturn[0m <div>{element.content}</div>;
+  [90m91 |[0m     }
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/components/Builder/Canvas.tsx [Client Component Browser]
+    ./src/app/builder/page.tsx [Client Component Browser]
+    ./src/app/builder/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/Builder/Canvas.tsx [Client Component SSR]
+    ./src/app/builder/page.tsx [Client Component SSR]
+    ./src/app/builder/page.tsx [Server Component]
+
+
+    at <unknown> (./src/components/Builder/Canvas.tsx:88:15)
