@@ -26,7 +26,7 @@ export default function BuilderTopbar() {
     router.push('/dashboard');
   };
 
-  const handleSave = () => {
+  const handleSave = (shouldExit = false) => {
     saveHistory();
     
     // Check if project already exists in projectsStore (using name as proxy or add a real ID)
@@ -49,14 +49,21 @@ export default function BuilderTopbar() {
     }
 
     toast.success('Project saved successfully');
-    router.push('/dashboard');
+    
+    if (shouldExit) {
+      router.push('/dashboard');
+    }
+  };
+
+  const handleExit = () => {
+    handleSave(true);
   };
 
   return (
     <div className="builder-topbar">
       <div className="topbar-left">
-        <button className="btn btn-ghost btn-sm" onClick={handleBack} style={{ marginRight: '8px' }}>
-          <ChevronLeft size={16} /> Back
+        <button className="btn btn-ghost btn-sm" onClick={handleExit} style={{ marginRight: '8px' }}>
+          <ChevronLeft size={16} /> Exit
         </button>
         <Link href="/dashboard" className="topbar-logo">
           <div className="logo-icon"><Zap size={14} color="white" /></div>
@@ -88,13 +95,10 @@ export default function BuilderTopbar() {
         <button className="btn btn-ghost btn-sm" onClick={() => setActivePanel('preview')}>
           <Eye size={14} /> Preview
         </button>
-        <button className="btn btn-ghost btn-sm" onClick={() => setActivePanel('export')}>
-          <Download size={14} /> Export
-        </button>
         <button className="btn btn-ghost btn-sm" onClick={() => setActivePanel('settings')}>
           <Settings size={14} />
         </button>
-        <button className="btn btn-secondary btn-sm" onClick={handleSave}>
+        <button className="btn btn-secondary btn-sm" onClick={() => handleSave(false)}>
           <Save size={14} /> Save
         </button>
         <button

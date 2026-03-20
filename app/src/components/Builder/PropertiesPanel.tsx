@@ -4,23 +4,242 @@ import { useBuilderStore } from '@/store/builderStore';
 import { Trash2 } from 'lucide-react';
 
 export default function PropertiesPanel() {
-  const { selectedElementId, pages, activePageId, updateElement, deleteElement, getSelectedElement } = useBuilderStore();
-  const selected = getSelectedElement();
+  const { 
+    selectedElementId, 
+    selectedSectionId,
+    activePageId, 
+    updateElement, 
+    deleteElement, 
+    updateSection,
+    deleteSection,
+    getSelectedElement,
+    getSelectedSection
+  } = useBuilderStore();
+  
+  const selectedEl = getSelectedElement();
+  const selectedSec = getSelectedSection();
 
-  if (!selected) {
+  if (!selectedEl && !selectedSec) {
     return (
       <div className="properties-panel">
         <div className="properties-header"><h3>Properties</h3></div>
         <div className="properties-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', textAlign: 'center', padding: '24px' }}>
-          Select an element on the canvas to edit its properties
+          Select an element or section on the canvas to edit its properties
         </div>
       </div>
     );
   }
 
-  const { element, sectionId } = selected;
+  // Section Properties
+  if (selectedSec && !selectedEl) {
+    const updateSecStyle = (key: string, value: string) => {
+      updateSection(activePageId, selectedSec.id, {
+        styles: { ...selectedSec.styles, [key]: value },
+      });
+    };
 
-  const updateStyle = (key: string, value: string) => {
+    const findImagesRecursively = (elements: any[]): any[] => {
+      let images: any[] = [];
+      elements.forEach(el => {
+        if (el.type === 'image') images.push(el);
+        if (el.children) images = [...images, ...findImagesRecursively(el.children)];
+      });
+      return images;
+    };
+
+    const findFormsRecursively = (elements: any[]): any[] => {
+      let forms: any[] = [];
+      elements.forEach(el => {
+        if (el.type === 'form') forms.push(el);
+        if (el.children) forms = [...forms, ...findFormsRecursively(el.children)];
+      });
+      return forms;
+    };
+
+    const sectionImages = findImagesRecursively(selectedSec.elements);
+    const sectionForms = findFormsRecursively(selectedSec.elements);
+
+    return (
+      <div className="properties-panel">
+        <div className="properties-header">
+          <h3>Section: {selectedSec.name}</h3>
+          <button className="btn btn-danger btn-sm" onClick={() => deleteSection(activePageId, selectedSec.id)}>
+            <Trash2 size={12} /> Delete
+          </button>
+        </div>
+        <div className="properties-content">
+          <div className="property-group">
+            <div className="property-group-title">Layout</div>
+            <div className="property-row">
+              <label>Name</label>
+              <input className="input" value={selectedSec.name} onChange={e => updateSection(activePageId, selectedSec.id, { name: e.target.value })} />
+            </div>
+            <div className="property-row">
+              <label>Min Height</label>
+              <input className="input input-sm" value={selectedSec.styles?.minHeight || ''} onChange={e => updateSecStyle('minHeight', e.target.value)} placeholder="auto" />
+            </div>
+            {/* Special Case: Video Hero Background */}
+            {selectedSec.elements.find(el => el.type === 'video') && (
+              <div className="property-row">
+                <label>Video URL</label>
+                <input 
+                  className="input input-sm" 
+                  value={selectedSec.elements.find(el => el.type === 'video')?.content || ''} 
+                  onChange={e => {
+                    const videoEl = selectedSec.elements.find(el => el.type === 'video');
+                    if (videoEl) {
+                      updateElement(activePageId, selectedSec.id, videoEl.id, { content: e.target.value });
+                    }
+                  }} 
+                  placeholder="https://youtube.com/embed/..." 
+                />
+              </div>
+            )}
+            
+            {sectionImages.length > 0 && (
+              <div style={{ marginTop: '16px', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
+                <div className="property-group-title" style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-tertiary)', marginBottom: '12px' }}>
+                  Member / Section Images ({sectionImages.length})
+                </div>
+                {sectionImages.map((img, idx) => (
+                  <div key={img.id} className="property-row" style={{ marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
+                      <img src={img.content} style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border-subtle)' }} />
+                      <input 
+                        className="input input-sm" 
+                        value={img.content} 
+                        onChange={e => updateElement(activePageId, selectedSec.id, img.id, { content: e.target.value })}
+                        placeholder="Image URL"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {sectionForms.length > 0 && (
+              <div style={{ marginTop: '16px', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
+                <div className="property-group-title" style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-tertiary)', marginBottom: '12px' }}>
+                  Form Settings ({sectionForms.length})
+                </div>
+                {sectionForms.map((form) => (
+                  <div key={form.id} className="property-row" style={{ marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontSize: '12px' }}>Button Text</label>
+                    <input 
+                      className="input input-sm" 
+                      value={form.content || 'Submit'} 
+                      onChange={e => updateElement(activePageId, selectedSec.id, form.id, { content: e.target.value })}
+                      placeholder="Submit Button Text"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="property-group">
+            <div className="property-group-title">Animations</div>
+            <div className="property-row">
+              <label>Entrance</label>
+              <select className="input input-sm" value={selectedSec.styles?.animationType || 'none'} onChange={e => updateSecStyle('animationType', e.target.value)}>
+                <option value="none">None</option>
+                <option value="fade">Fade In</option>
+                <option value="slideUp">Slide Up</option>
+                <option value="slideDown">Slide Down</option>
+                <option value="slideLeft">Slide Left</option>
+                <option value="slideRight">Slide Right</option>
+                <option value="scaleUp">Scale Up</option>
+                <option value="zoomIn">Zoom In</option>
+                <option value="blurIn">Blur In</option>
+              </select>
+            </div>
+            {selectedSec.styles?.animationType !== 'none' && (
+              <>
+                <div className="property-row">
+                  <label>Delay (s)</label>
+                  <input type="number" step="0.1" min="0" className="input input-sm" value={selectedSec.styles?.animationDelay || 0} onChange={e => updateSecStyle('animationDelay', e.target.value)} />
+                </div>
+                <div className="property-row">
+                  <label>Duration (s)</label>
+                  <input type="number" step="0.1" min="0.1" className="input input-sm" value={selectedSec.styles?.animationDuration || 0.5} onChange={e => updateSecStyle('animationDuration', e.target.value)} />
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="property-group">
+            <div className="property-group-title">Spacing</div>
+            <div className="property-label-row">
+              <label>Padding</label>
+            </div>
+            <div className="property-grid-4">
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.paddingTop || ''} onChange={e => updateSecStyle('paddingTop', e.target.value)} placeholder="T" />
+                <span>Top</span>
+              </div>
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.paddingRight || ''} onChange={e => updateSecStyle('paddingRight', e.target.value)} placeholder="R" />
+                <span>Right</span>
+              </div>
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.paddingBottom || ''} onChange={e => updateSecStyle('paddingBottom', e.target.value)} placeholder="B" />
+                <span>Bottom</span>
+              </div>
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.paddingLeft || ''} onChange={e => updateSecStyle('paddingLeft', e.target.value)} placeholder="L" />
+                <span>Left</span>
+              </div>
+            </div>
+            <div className="property-row mt-2">
+              <label>All</label>
+              <input className="input input-sm" value={selectedSec.styles?.padding || ''} onChange={e => updateSecStyle('padding', e.target.value)} placeholder="64px 32px" />
+            </div>
+
+            <div className="property-label-row mt-3">
+              <label>Margin</label>
+            </div>
+            <div className="property-grid-4">
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.marginTop || ''} onChange={e => updateSecStyle('marginTop', e.target.value)} placeholder="T" />
+                <span>Top</span>
+              </div>
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.marginRight || ''} onChange={e => updateSecStyle('marginRight', e.target.value)} placeholder="R" />
+                <span>Right</span>
+              </div>
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.marginBottom || ''} onChange={e => updateSecStyle('marginBottom', e.target.value)} placeholder="B" />
+                <span>Bottom</span>
+              </div>
+              <div className="property-input-stack">
+                <input className="input input-xs" value={selectedSec.styles?.marginLeft || ''} onChange={e => updateSecStyle('marginLeft', e.target.value)} placeholder="L" />
+                <span>Left</span>
+              </div>
+            </div>
+          </div>
+
+
+          <div className="property-group">
+            <div className="property-group-title">Background</div>
+            <div className="property-row">
+              <label>Color</label>
+              <div className="color-picker-wrapper">
+                <div className="color-swatch">
+                  <input type="color" value={selectedSec.styles?.backgroundColor?.startsWith('var') ? '#ffffff' : (selectedSec.styles?.backgroundColor || '#ffffff')} onChange={e => updateSecStyle('backgroundColor', e.target.value)} />
+                </div>
+                <input className="input input-sm" value={selectedSec.styles?.backgroundColor || ''} onChange={e => updateSecStyle('backgroundColor', e.target.value)} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Element Properties
+  const { element, sectionId } = selectedEl!;
+
+  const updateStyle = (key: string, value: string | number) => {
     updateElement(activePageId, sectionId, element.id, {
       styles: { ...element.styles, [key]: value },
     });
@@ -30,10 +249,16 @@ export default function PropertiesPanel() {
     updateElement(activePageId, sectionId, element.id, { content });
   };
 
+  const updateProp = (key: string, value: any) => {
+    updateElement(activePageId, sectionId, element.id, {
+      props: { ...element.props, [key]: value },
+    });
+  };
+
   return (
     <div className="properties-panel">
       <div className="properties-header">
-        <h3>Properties</h3>
+        <h3>{element.type} Properties</h3>
         <button className="btn btn-danger btn-sm" onClick={() => deleteElement(activePageId, sectionId, element.id)}>
           <Trash2 size={12} /> Delete
         </button>
@@ -47,6 +272,18 @@ export default function PropertiesPanel() {
               <textarea className="textarea" value={element.content} onChange={e => updateContent(e.target.value)} rows={4} placeholder="One item per line" />
             ) : (
               <input className="input" value={element.content} onChange={e => updateContent(e.target.value)} />
+            )}
+            
+            {['button', 'text', 'heading'].includes(element.type) && (
+              <div className="property-row mt-3">
+                <label>Link (URL)</label>
+                <input 
+                  className="input input-sm" 
+                  value={(element.props?.link as string) || ''} 
+                  onChange={e => updateProp('link', e.target.value)} 
+                  placeholder="https://example.com"
+                />
+              </div>
             )}
           </div>
         )}
@@ -142,8 +379,45 @@ export default function PropertiesPanel() {
         {/* Spacing */}
         <div className="property-group">
           <div className="property-group-title">Spacing</div>
-          <div className="property-row"><label>Padding</label><input className="input input-sm" value={element.styles.padding || ''} onChange={e => updateStyle('padding', e.target.value)} placeholder="0px" /></div>
-          <div className="property-row"><label>Margin</label><input className="input input-sm" value={element.styles.margin || ''} onChange={e => updateStyle('margin', e.target.value)} placeholder="0px" /></div>
+          <div className="property-label-row"><label>Padding</label></div>
+          <div className="property-grid-4">
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.paddingTop || ''} onChange={e => updateStyle('paddingTop', e.target.value)} placeholder="T" />
+              <span>Top</span>
+            </div>
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.paddingRight || ''} onChange={e => updateStyle('paddingRight', e.target.value)} placeholder="R" />
+              <span>Right</span>
+            </div>
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.paddingBottom || ''} onChange={e => updateStyle('paddingBottom', e.target.value)} placeholder="B" />
+              <span>Bottom</span>
+            </div>
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.paddingLeft || ''} onChange={e => updateStyle('paddingLeft', e.target.value)} placeholder="L" />
+              <span>Left</span>
+            </div>
+          </div>
+          
+          <div className="property-label-row mt-3"><label>Margin</label></div>
+          <div className="property-grid-4">
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.marginTop || ''} onChange={e => updateStyle('marginTop', e.target.value)} placeholder="T" />
+              <span>Top</span>
+            </div>
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.marginRight || ''} onChange={e => updateStyle('marginRight', e.target.value)} placeholder="R" />
+              <span>Right</span>
+            </div>
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.marginBottom || ''} onChange={e => updateStyle('marginBottom', e.target.value)} placeholder="B" />
+              <span>Bottom</span>
+            </div>
+            <div className="property-input-stack">
+              <input className="input input-xs" value={element.styles.marginLeft || ''} onChange={e => updateStyle('marginLeft', e.target.value)} placeholder="L" />
+              <span>Left</span>
+            </div>
+          </div>
         </div>
 
         {/* Border */}
@@ -160,21 +434,6 @@ export default function PropertiesPanel() {
               <input className="input input-sm" value={element.styles.borderColor || ''} onChange={e => updateStyle('borderColor', e.target.value)} />
             </div>
           </div>
-        </div>
-
-        {/* Shadow */}
-        <div className="property-group">
-          <div className="property-group-title">Effects</div>
-          <div className="property-row"><label>Shadow</label>
-            <select className="input input-sm" value={element.styles.boxShadow || 'none'} onChange={e => updateStyle('boxShadow', e.target.value)}>
-              <option value="none">None</option>
-              <option value="0 1px 3px rgba(0,0,0,0.12)">Small</option>
-              <option value="0 4px 12px rgba(0,0,0,0.15)">Medium</option>
-              <option value="0 10px 30px rgba(0,0,0,0.2)">Large</option>
-              <option value="0 20px 60px rgba(0,0,0,0.3)">XL</option>
-            </select>
-          </div>
-          <div className="property-row"><label>Opacity</label><input className="input input-sm" type="number" min="0" max="1" step="0.1" value={element.styles.opacity || '1'} onChange={e => updateStyle('opacity', e.target.value)} /></div>
         </div>
 
         {/* Layout (for containers/columns) */}

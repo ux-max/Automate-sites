@@ -1057,6 +1057,70 @@ img {
   max-width: 375px;
 }
 
+/* Canvas Responsive Overrides */
+/* Grid handled first - forcing column reduction on tablet/mobile */
+.canvas-frame.tablet [style*="display: grid"] {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 20px !important;
+}
+
+.canvas-frame.mobile [style*="display: grid"] {
+  grid-template-columns: 1fr !important;
+  gap: 16px !important;
+}
+
+/* Flexbox handling - forcing wrap and vertical stacking on mobile */
+.canvas-frame.mobile [style*="display: flex"] {
+  flex-direction: column !important;
+  flex-wrap: wrap !important;
+  align-items: stretch !important;
+  gap: 16px !important;
+}
+
+/* Special case: keep some flex rows if they are small (like icons or button groups) */
+.canvas-frame.mobile [style*="justify-content: center"][style*="display: flex"],
+.canvas-frame.mobile [style*="display: flex"][style*="gap: 8px"],
+.canvas-frame.mobile [style*="display: flex"][style*="gap: 16px"] {
+  flex-direction: row !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+}
+
+/* Padding & Margin reduction */
+.canvas-frame.mobile .canvas-section {
+  padding: 40px 16px !important;
+}
+
+.canvas-frame.tablet .canvas-section {
+  padding: 60px 24px !important;
+}
+
+/* Font size scaling */
+.canvas-frame.mobile [style*="font-size: 64px"],
+.canvas-frame.mobile [style*="font-size: 56px"],
+.canvas-frame.mobile [style*="font-size: 48px"] {
+  font-size: 32px !important;
+  line-height: 1.2 !important;
+}
+
+.canvas-frame.mobile [style*="font-size: 42px"],
+.canvas-frame.mobile [style*="font-size: 36px"],
+.canvas-frame.mobile [style*="font-size: 32px"] {
+  font-size: 24px !important;
+  line-height: 1.3 !important;
+}
+
+.canvas-frame.tablet [style*="font-size: 64px"],
+.canvas-frame.tablet [style*="font-size: 56px"] {
+  font-size: 42px !important;
+}
+
+/* Image handling */
+.canvas-frame.mobile [style*="height: 400px"],
+.canvas-frame.mobile [style*="height: 500px"] {
+  height: 250px !important;
+}
+
 .canvas-empty {
   display: flex;
   flex-direction: column;
@@ -1934,3 +1998,195 @@ select.input {
     text-align: center;
   }
 }
+
+/* ===== BUILDER CANVAS ENHANCEMENTS ===== */
+
+.canvas-section {
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.canvas-section.drop-target {
+  background-color: rgba(59, 130, 246, 0.05) !important;
+  box-shadow: inset 0 0 0 2px var(--primary-500);
+}
+
+.canvas-section {
+  position: relative;
+  transition: outline var(--transition-base);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+
+.canvas-section.selected {
+  outline-color: var(--primary-500);
+}
+
+.section-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  z-index: 20;
+  padding-top: 12px;
+}
+
+.canvas-section:hover .section-controls,
+.canvas-section.selected .section-controls {
+  opacity: 1;
+}
+
+.section-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: grab;
+  transition: color var(--transition-base);
+}
+
+.section-drag-handle:hover {
+  color: var(--text-primary);
+}
+
+.section-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section-action-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.section-action-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.canvas-element {
+  position: relative;
+  transition: all var(--transition-base);
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+}
+
+.canvas-element:hover {
+  outline-color: var(--primary-400);
+}
+
+.canvas-element.selected {
+  outline-color: var(--primary-500);
+  background: rgba(59, 130, 246, 0.02);
+}
+
+.element-controls {
+  position: absolute;
+  top: -24px;
+  left: -1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  background: var(--primary-500);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+  z-index: 100;
+  height: 24px;
+}
+
+.canvas-element:hover .element-controls,
+.canvas-element.selected .element-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.element-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.drop-placeholder {
+  padding: 40px;
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Property Panel Advanced Styles */
+.property-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.property-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.property-input-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.property-input-stack span {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.input-xs {
+  height: 24px;
+  padding: 0 4px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }

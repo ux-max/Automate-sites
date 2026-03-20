@@ -35,6 +35,10 @@ export default function SectionsPanel() {
                   key={section.id} 
                   className="section-item"
                   onClick={() => handleAddSection(section)}
+                  draggable
+                  onDragStart={e => {
+                    e.dataTransfer.setData('sectionData', JSON.stringify(section.data));
+                  }}
                 >
                   <div className="section-item-preview">
                     <LayoutTemplate size={24} className="text-muted" />

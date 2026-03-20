@@ -21,7 +21,6 @@ import PreviewPanel from '@/components/Panels/PreviewPanel';
 
 const panelTitles: Record<string, string> = {
   sections: 'Section Library',
-  pages: 'Manage Pages',
   themes: 'Themes & Templates',
   media: 'Media Library',
   cms: 'Content Management',
@@ -45,7 +44,6 @@ export default function SidePanelManager() {
   const renderPanel = () => {
     switch (activePanel) {
       case 'sections': return <SectionsPanel />;
-      case 'pages': return <PageManager />;
       case 'themes': return <ThemePanel />;
       case 'media': return <MediaPanel />;
       case 'cms': return <CMSPanel />;

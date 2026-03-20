@@ -88,6 +88,12 @@ export interface ElementStyles {
   cursor?: string;
   transition?: string;
   backdropFilter?: string;
+
+  // Animations
+  animationType?: 'none' | 'fade' | 'slideUp' | 'slideDown' | 'slideLeft' | 'slideRight' | 'scaleUp' | 'zoomIn' | 'blurIn';
+  animationDelay?: number;
+  animationDuration?: number;
+  animationOnce?: boolean;
 }
 
 export interface CanvasElement {
@@ -143,6 +149,7 @@ interface BuilderState {
   
   // Selection
   selectedElementId: string | null;
+  selectedSectionId: string | null;
   hoveredElementId: string | null;
   
   // Device
@@ -167,17 +174,20 @@ interface BuilderState {
   createNewProject: () => void;
   
   // Actions - Sections
-  addSection: (pageId: string, sectionData?: Partial<PageSection>) => void;
+  addSection: (pageId: string, sectionData?: Partial<PageSection>, index?: number) => void;
+  updateSection: (pageId: string, sectionId: string, updates: Partial<PageSection>) => void;
   deleteSection: (pageId: string, sectionId: string) => void;
+  moveSection: (pageId: string, fromIndex: number, toIndex: number) => void;
   
   // Actions - Elements
   addElement: (pageId: string, sectionId: string, element: Omit<CanvasElement, 'id'>) => void;
   updateElement: (pageId: string, sectionId: string, elementId: string, updates: Partial<CanvasElement>) => void;
   deleteElement: (pageId: string, sectionId: string, elementId: string) => void;
-  moveElement: (pageId: string, sectionId: string, fromIndex: number, toIndex: number) => void;
+  moveElement: (pageId: string, fromId: string, toId: string) => void;
   
   // Actions - Selection
   selectElement: (elementId: string | null) => void;
+  selectSection: (sectionId: string | null) => void;
   hoverElement: (elementId: string | null) => void;
   
   // Actions - Device
@@ -200,6 +210,7 @@ interface BuilderState {
   // Getters
   getActivePage: () => Page | undefined;
   getSelectedElement: () => { element: CanvasElement; sectionId: string } | null;
+  getSelectedSection: () => PageSection | null;
 }
 
 const createDefaultPage = (): Page => ({
@@ -236,6 +247,7 @@ export const useBuilderStore = create<BuilderState>()(
         pages: [defaultPage],
         activePageId: defaultPage.id,
         selectedElementId: null,
+        selectedSectionId: null,
         hoveredElementId: null,
         deviceView: 'desktop',
         activePanel: 'elements',
@@ -310,7 +322,7 @@ export const useBuilderStore = create<BuilderState>()(
         },
         
         // Sections
-        addSection: (pageId: string, sectionData?: Partial<PageSection>) => {
+        addSection: (pageId: string, sectionData?: Partial<PageSection>, index?: number) => {
           const generateIds = (els: CanvasElement[]): CanvasElement[] => {
             return els.map(el => ({
               ...el,
@@ -327,20 +339,62 @@ export const useBuilderStore = create<BuilderState>()(
           };
 
           set((state: BuilderState) => ({
-            pages: state.pages.map((p: Page) =>
-              p.id === pageId ? { ...p, sections: [...p.sections, newSection] } : p
-            ),
+            pages: state.pages.map((p: Page) => {
+              if (p.id !== pageId) return p;
+              const sections = [...p.sections];
+              if (typeof index === 'number' && index >= 0 && index <= sections.length) {
+                sections.splice(index, 0, newSection);
+              } else {
+                sections.push(newSection);
+              }
+              return { ...p, sections };
+            }),
+            selectedSectionId: newSection.id
           }));
           get().saveHistory();
         },
         
+        
+        updateSection: (pageId: string, sectionId: string, updates: Partial<PageSection>) => {
+          set((state: BuilderState) => ({
+            pages: state.pages.map((p: Page) =>
+              p.id === pageId
+                ? {
+                  ...p,
+                  sections: p.sections.map((s: PageSection) =>
+                    s.id === sectionId ? { ...s, ...updates } : s
+                  ),
+                }
+                : p
+            ),
+          }));
+          get().saveHistory();
+        },
+
         deleteSection: (pageId: string, sectionId: string) => {
           set((state: BuilderState) => ({
             pages: state.pages.map((p: Page) =>
               p.id === pageId
-                ? { ...p, sections: p.sections.filter((s: PageSection) => s.id !== sectionId) }
+                ? {
+                  ...p,
+                  sections: p.sections.filter((s: PageSection) => s.id !== sectionId)
+                }
                 : p
             ),
+            selectedSectionId: state.selectedSectionId === sectionId ? null : state.selectedSectionId,
+          }));
+          get().saveHistory();
+        },
+        
+        moveSection: (pageId: string, fromIndex: number, toIndex: number) => {
+          set((state: BuilderState) => ({
+            pages: state.pages.map((p: Page) => {
+              if (p.id !== pageId) return p;
+              const sections = [...p.sections];
+              const [moved] = sections.splice(fromIndex, 1);
+              sections.splice(toIndex, 0, moved);
+              return { ...p, sections };
+            }),
           }));
           get().saveHistory();
         },
@@ -388,6 +442,7 @@ export const useBuilderStore = create<BuilderState>()(
                 : p
             ),
           }));
+          get().saveHistory();
         },
         
         deleteElement: (pageId: string, sectionId: string, elementId: string) => {
@@ -416,28 +471,91 @@ export const useBuilderStore = create<BuilderState>()(
           get().saveHistory();
         },
         
-        moveElement: (pageId: string, sectionId: string, fromIndex: number, toIndex: number) => {
-          set((state: BuilderState) => ({
-            pages: state.pages.map((p: Page) =>
-              p.id === pageId
-                ? {
-                  ...p,
-                  sections: state.pages.find((pg: Page) => pg.id === pageId)?.sections.map((s: PageSection) => {
-                    if (s.id !== sectionId) return s;
-                    const els = [...s.elements];
-                    const [moved] = els.splice(fromIndex, 1);
-                    els.splice(toIndex, 0, moved);
-                    return { ...s, elements: els };
-                  }) || [],
+        moveElement: (pageId: string, fromId: string, toId: string) => {
+          set((state: BuilderState) => {
+            const pages = JSON.parse(JSON.stringify(state.pages));
+            const page = pages.find((p: any) => p.id === pageId);
+            if (!page) return state;
+
+            // Helper to find an element and its parent list
+            const findInfo = (els: CanvasElement[]): { list: CanvasElement[], index: number, element: CanvasElement } | null => {
+              const idx = els.findIndex(e => e.id === fromId);
+              if (idx !== -1) return { list: els, index: idx, element: els[idx] };
+              for (const e of els) {
+                if (e.children) {
+                  const found = findInfo(e.children);
+                  if (found) return found;
                 }
-                : p
-            ),
-          }));
+              }
+              return null;
+            };
+
+            const sourceInfo = (() => {
+              for (const s of page.sections) {
+                const found = findInfo(s.elements);
+                if (found) return found;
+              }
+              return null;
+            })();
+
+            if (!sourceInfo) return state;
+
+            // Helper to find target list and index
+            const findTarget = (els: CanvasElement[]): { list: CanvasElement[], index: number } | null => {
+              const idx = els.findIndex(e => e.id === toId);
+              if (idx !== -1) return { list: els, index: idx };
+              for (const e of els) {
+                if (e.children) {
+                  const found = findTarget(e.children);
+                  if (found) return found;
+                }
+              }
+              return null;
+            };
+
+            // Case A: toId is a Section
+            const targetSec = page.sections.find((s: PageSection) => s.id === toId);
+            if (targetSec) {
+              sourceInfo.list.splice(sourceInfo.index, 1);
+              targetSec.elements.push(sourceInfo.element);
+              return { pages };
+            }
+
+            // Case B: toId is an Element
+            const targetInfo = (() => {
+              for (const s of page.sections) {
+                const found = findTarget(s.elements);
+                if (found) return found;
+              }
+              return null;
+            })();
+
+            if (targetInfo) {
+              if (sourceInfo.list === targetInfo.list) {
+                // Same container reordering (arrayMove logic)
+                const [moved] = targetInfo.list.splice(sourceInfo.index, 1);
+                targetInfo.list.splice(targetInfo.index, 0, moved);
+              } else {
+                // Cross container move
+                sourceInfo.list.splice(sourceInfo.index, 1);
+                targetInfo.list.splice(targetInfo.index, 0, sourceInfo.element);
+              }
+            }
+
+            return { pages };
+          });
           get().saveHistory();
         },
         
         // Selection
-        selectElement: (elementId: string | null) => set({ selectedElementId: elementId }),
+        selectElement: (elementId: string | null) => set({ 
+          selectedElementId: elementId,
+          selectedSectionId: elementId ? null : get().selectedSectionId 
+        }),
+        selectSection: (sectionId: string | null) => set({ 
+          selectedSectionId: sectionId,
+          selectedElementId: sectionId ? null : get().selectedElementId
+        }),
         hoverElement: (elementId: string | null) => set({ hoveredElementId: elementId }),
         
         // Device
@@ -525,6 +643,13 @@ export const useBuilderStore = create<BuilderState>()(
             if (element) return { element, sectionId: section.id };
           }
           return null;
+        },
+
+        getSelectedSection: () => {
+          const state = get();
+          if (!state.selectedSectionId) return null;
+          const page = state.pages.find((p: Page) => p.id === state.activePageId);
+          return page?.sections.find((s: PageSection) => s.id === state.selectedSectionId) || null;
         },
       };
     },

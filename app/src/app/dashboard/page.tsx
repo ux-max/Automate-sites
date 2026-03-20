@@ -53,6 +53,11 @@ export default function Dashboard() {
     }
   };
 
+  const handleOpenProject = (project: any) => {
+    importTemplate(project.pages);
+    router.push('/builder');
+  };
+
   const filteredTemplates = templates.filter(t => 
     t.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (activeTab === 'all' || t.category.toLowerCase() === activeTab.toLowerCase())
@@ -101,6 +106,7 @@ export default function Dashboard() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px', fontSize: '14px', color: 'var(--text-tertiary)' }}>
             <Link href="/dashboard" style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Projects</Link>
             <Link href="#" className="nav-link">Templates</Link>
+            <Link href="#" className="nav-link">Team</Link>
             <Link href="#" className="nav-link">Resources</Link>
           </div>
         </div>
@@ -245,10 +251,16 @@ export default function Dashboard() {
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>My Websites</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
               {projects.map((project) => (
-                <div key={project.id} style={{ 
-                  background: 'var(--bg-secondary)', padding: '16px', borderRadius: '12px',
-                  border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: '16px'
-                }}>
+                <div 
+                  key={project.id} 
+                  onClick={() => handleOpenProject(project)}
+                  style={{ 
+                    background: 'var(--bg-secondary)', padding: '16px', borderRadius: '12px',
+                    border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: '16px',
+                    cursor: 'pointer', transition: 'all 0.2s'
+                  }}
+                  className="project-card"
+                >
                   <div style={{ width: '40px', height: '40px', background: 'var(--bg-tertiary)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
                     {project.bannerEmoji || '🌐'}
                   </div>
@@ -256,8 +268,14 @@ export default function Dashboard() {
                     <h3 style={{ fontSize: '14px', fontWeight: 600 }}>{project.name}</h3>
                     <p style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>Edited {new Date(project.lastModified).toLocaleDateString()}</p>
                   </div>
-                  <button style={{ border: 'none', background: 'transparent', color: 'var(--text-tertiary)', cursor: 'pointer' }}>
-                    <MoreVertical size={16} />
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Delete logic can be added here if needed
+                    }}
+                    style={{ border: 'none', background: 'transparent', color: 'var(--text-tertiary)', cursor: 'pointer' }}
+                  >
+                    <MoreVertical size={14} />
                   </button>
                 </div>
               ))}
@@ -271,6 +289,12 @@ export default function Dashboard() {
           border-color: var(--primary-500) !important;
           transform: translateY(-4px);
           box-shadow: var(--shadow-lg);
+        }
+        .project-card:hover {
+          border-color: var(--primary-500) !important;
+          background: var(--bg-tertiary) !important;
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-md);
         }
         .card-preview:hover .hover-overlay {
           opacity: 1 !important;

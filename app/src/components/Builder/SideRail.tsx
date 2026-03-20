@@ -8,13 +8,9 @@ import {
 
 const navItems = [
   { id: 'sections', label: 'Sections', icon: <LayoutGrid size={20} /> },
-  { id: 'pages', label: 'Pages', icon: <FileText size={20} /> },
   { id: 'themes', label: 'Themes', icon: <Palette size={20} /> },
-  { id: 'media', label: 'Media', icon: <Image size={20} /> },
   { id: 'forms', label: 'Forms', icon: <FormInput size={20} /> },
   { id: 'analytics', label: 'Analytics', icon: <BarChart3 size={20} /> },
-  { id: 'team', label: 'Team', icon: <Users size={20} /> },
-  { id: 'ai', label: 'AI Builder', icon: <Bot size={20} /> },
   { id: 'settings', label: 'Settings', icon: <Settings size={20} /> },
 ];
 
