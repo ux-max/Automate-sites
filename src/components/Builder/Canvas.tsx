@@ -509,7 +509,7 @@ export default function Canvas() {
           onDrop={handleCanvasDrop}
         >
           <div 
-            className={`canvas-frame ${deviceView}`}
+            className={`canvas-frame responsive-render ${deviceView}`}
             style={{ 
               ...themeVars,
               background: 'var(--theme-background)',

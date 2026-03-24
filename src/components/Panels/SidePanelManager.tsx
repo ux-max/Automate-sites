@@ -33,7 +33,6 @@ const panelTitles: Record<string, string> = {
   ai: 'AI Builder',
   export: 'Export Code',
   settings: 'Project Settings',
-  preview: 'Preview Mode',
 };
 
 export default function SidePanelManager() {
@@ -56,7 +55,6 @@ export default function SidePanelManager() {
       case 'ai': return <AIPanel />;
       case 'export': return <ExportPanel />;
       case 'settings': return <SettingsPanel />;
-      case 'preview': return <PreviewPanel />;
       default: return null;
     }
   };

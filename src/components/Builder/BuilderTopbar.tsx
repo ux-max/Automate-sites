@@ -92,7 +92,7 @@ export default function BuilderTopbar() {
         <button className="btn btn-ghost btn-icon" onClick={toggleThemeMode} title={themeMode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
           {themeMode === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
         </button>
-        <button className="btn btn-ghost btn-sm" onClick={() => setActivePanel('preview')}>
+        <button className="btn btn-ghost btn-sm" onClick={() => window.open('/preview', '_blank')}>
           <Eye size={14} /> Preview
         </button>
         <button className="btn btn-ghost btn-sm" onClick={() => setActivePanel('settings')}>

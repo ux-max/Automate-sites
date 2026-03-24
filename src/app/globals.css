@@ -1121,6 +1121,89 @@ img {
   height: 250px !important;
 }
 
+/* ===== UNIFIED RESPONSIVE RENDER ===== */
+/* These rules ensure the site looks good on all devices, both in builder and preview */
+
+.responsive-render {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .responsive-render [style*="display: grid"] {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 20px !important;
+  }
+  
+  .responsive-render .canvas-section {
+    padding: 60px 24px !important;
+  }
+
+  .responsive-render [style*="font-size: 64px"],
+  .responsive-render [style*="font-size: 56px"] {
+    font-size: 42px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-render [style*="display: grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .responsive-render [style*="display: flex"] {
+    flex-direction: column !important;
+    flex-wrap: wrap !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+
+  /* Special case: keep some flex rows if they are small (like icons or button groups) */
+  .responsive-render [style*="justify-content: center"][style*="display: flex"],
+  .responsive-render [style*="display: flex"][style*="gap: 8px"],
+  .responsive-render [style*="display: flex"][style*="gap: 16px"] {
+    flex-direction: row !important;
+    justify-content: center !important;
+  }
+
+  .responsive-render .canvas-section {
+    padding: 40px 16px !important;
+  }
+
+  /* Font size scaling */
+  .responsive-render [style*="font-size: 64px"],
+  .responsive-render [style*="font-size: 56px"],
+  .responsive-render [style*="font-size: 48px"] {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+
+  .responsive-render [style*="font-size: 42px"],
+  .responsive-render [style*="font-size: 36px"],
+  .responsive-render [style*="font-size: 32px"] {
+    font-size: 24px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Image & Video handling */
+  .responsive-render [style*="height: 400px"],
+  .responsive-render [style*="height: 500px"] {
+    height: 250px !important;
+  }
+}
+
+/* Visibility Utilities */
+@media (min-width: 1025px) {
+  .hide-desktop { display: none !important; }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hide-tablet { display: none !important; }
+}
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+
 .canvas-empty {
   display: flex;
   flex-direction: column;
@@ -1528,6 +1611,77 @@ img {
 
 .section-item:hover .section-item-add {
   color: var(--primary-500);
+}
+
+.section-item-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.section-info-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+  color: var(--text-tertiary);
+}
+
+.section-info-trigger:hover {
+  background: var(--surface-glass-hover);
+  color: var(--primary-400);
+}
+
+.section-tooltip {
+  position: fixed;
+  transform: translateY(-50%);
+  width: 220px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-xl);
+  z-index: 9999;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+.section-tooltip::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent var(--border-default) transparent transparent;
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary-400);
+  margin-bottom: 4px;
+}
+
+.section-tooltip p {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(-8px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
 }
 
 /* Page list  */
