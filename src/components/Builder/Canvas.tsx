@@ -3,7 +3,7 @@
 import { useBuilderStore, CanvasElement, PageSection } from '@/store/builderStore';
 import { useThemeStore } from '@/store/themeStore';
 import { Monitor, Tablet, Smartphone, Plus, Trash2, GripVertical, Settings } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -85,7 +85,7 @@ const formatStyle = (style: any): React.CSSProperties => {
   return formatted;
 };
 
-function RenderElement({ element, sectionId, pageId }: { element: CanvasElement; sectionId: string; pageId: string }) {
+function RenderElement({ element, sectionId, pageId, isMenuOpen, toggleMenu }: { element: CanvasElement; sectionId: string; pageId: string; isMenuOpen?: boolean; toggleMenu?: () => void }) {
   const { selectElement, selectedElementId, hoveredElementId, hoverElement } = useBuilderStore();
   const isSelected = selectedElementId === element.id;
   const isHovered = hoveredElementId === element.id;
@@ -118,8 +118,36 @@ function RenderElement({ element, sectionId, pageId }: { element: CanvasElement;
     selectElement(element.id);
   };
 
+  // Merge device-specific styles
+  const { deviceView } = useBuilderStore();
+  const mergedStyles = useMemo(() => {
+    const baseFields = element.styles || {};
+    const tabletFields = element.tabletStyles || {};
+    const mobileFields = element.mobileStyles || {};
+
+    if (deviceView === 'mobile') {
+      return { ...baseFields, ...tabletFields, ...mobileFields };
+    }
+    if (deviceView === 'tablet') {
+      return { ...baseFields, ...tabletFields };
+    }
+    return baseFields;
+  }, [element, deviceView]);
+
+  const elStyle = formatStyle(mergedStyles);
+
+  const visibilityClass = [
+    element.hidden?.desktop ? 'hide-desktop' : '',
+    element.hidden?.tablet ? 'hide-tablet' : '',
+    element.hidden?.mobile ? 'hide-mobile' : '',
+  ].filter(Boolean).join(' ');
+
+  const elementClassName = [
+    element.props?.mobileMenu ? 'mobile-menu-content' : '',
+    visibilityClass,
+  ].filter(Boolean).join(' ');
+
   const renderContent = () => {
-    const elStyle = formatStyle(element.styles);
     
     switch (element.type) {
       case 'heading':
@@ -236,11 +264,21 @@ function RenderElement({ element, sectionId, pageId }: { element: CanvasElement;
         return <div style={{ ...elStyle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{element.content}</div>;
       case 'list':
         return (
-          <ul style={{ ...elStyle, margin: 0, listStyleType: 'disc' }}>
+          <ul style={{ ...elStyle, margin: 0, listStyleType: 'disc' }} className={elementClassName}>
             {element.content.split('\n').map((item, i) => (
               <li key={i}>{item}</li>
             ))}
           </ul>
+        );
+      case 'hamburger':
+        return (
+          <div 
+            className="hamburger-toggle" 
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', ...elStyle }}
+            onClick={(e) => { e.stopPropagation(); toggleMenu?.(); }}
+          >
+            <div style={{ fontSize: '24px' }}>{isMenuOpen ? '✕' : '☰'}</div>
+          </div>
         );
       default:
         return <div>{element.content}</div>;
@@ -262,13 +300,16 @@ function RenderElement({ element, sectionId, pageId }: { element: CanvasElement;
         </div>
         <span className="element-label" style={{ fontWeight: '600' }}>{element.type}</span>
       </div>
-      {renderContent()}
+      <div className={elementClassName}>
+        {renderContent()}
+      </div>
     </div>
   );
 }
 
 function RenderSection({ section, pageId }: { section: PageSection; pageId: string }) {
-  const { addElement, selectElement, selectSection, deleteSection, selectedSectionId } = useBuilderStore();
+  const { addElement, selectElement, selectSection, deleteSection, selectedSectionId, deviceView } = useBuilderStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const isSelected = selectedSectionId === section.id;
 
   const {
@@ -341,7 +382,7 @@ function RenderSection({ section, pageId }: { section: PageSection; pageId: stri
         duration: Number(section.styles?.animationDuration) || 0.5,
         ease: 'easeOut'
       }}
-      className={`canvas-section ${isSelected ? 'selected' : ''}`}
+      className={`canvas-section ${isSelected ? 'selected' : ''} ${isMobileMenuOpen && deviceView === 'mobile' ? 'is-mobile-menu-open' : ''}`}
       onClick={(e) => { e.stopPropagation(); selectSection(section.id); }}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -371,7 +412,14 @@ function RenderSection({ section, pageId }: { section: PageSection; pageId: stri
           strategy={rectSortingStrategy}
         >
           {section.elements.map(el => (
-            <RenderElement key={el.id} element={el} sectionId={section.id} pageId={pageId} />
+            <RenderElement 
+              key={el.id} 
+              element={el} 
+              sectionId={section.id} 
+              pageId={pageId} 
+              isMenuOpen={isMobileMenuOpen}
+              toggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            />
           ))}
         </SortableContext>
       )}

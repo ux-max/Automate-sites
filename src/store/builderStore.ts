@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // ===== TYPES =====
 export type DeviceView = 'desktop' | 'tablet' | 'mobile';
-export type ElementType = 'text' | 'heading' | 'image' | 'button' | 'form' | 'video' | 'container' | 'columns' | 'divider' | 'spacer' | 'icon' | 'list';
+export type ElementType = 'text' | 'heading' | 'image' | 'button' | 'form' | 'video' | 'container' | 'columns' | 'divider' | 'spacer' | 'icon' | 'list' | 'hamburger';
 
 export interface ElementStyles {
   // Layout
@@ -104,7 +104,7 @@ export interface CanvasElement {
   tabletStyles?: Partial<ElementStyles>;
   mobileStyles?: Partial<ElementStyles>;
   children?: CanvasElement[];
-  props?: Record<string, unknown>;
+  props?: Record<string, unknown> & { mobileMenu?: boolean; [key: string]: any; };
   hidden?: {
     desktop?: boolean;
     tablet?: boolean;

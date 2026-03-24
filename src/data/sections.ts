@@ -1613,6 +1613,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', gap: '32px' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'Features', { fontWeight: '600', cursor: 'pointer' }),
             el('text', 'Pricing', { fontWeight: '600', cursor: 'pointer' }),
@@ -1621,11 +1622,13 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', gap: '16px', alignItems: 'center' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'Log in', { fontWeight: '600', cursor: 'pointer' }),
             el('button', 'Get Started', { backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '10px 20px', borderRadius: '6px', fontWeight: '700' }),
           ]
-        })
+        }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1646,13 +1649,15 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', justifyContent: 'center', gap: '40px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'var(--theme-border)', paddingTop: '20px' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'HOME', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
             el('text', 'COLLECTIONS', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
             el('text', 'OUR STORY', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
             el('text', 'CONTACT', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
           ]
-        })
+        }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1673,13 +1678,15 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', gap: '24px' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'Product', { fontSize: '15px' }),
             el('text', 'Resources', { fontSize: '15px' }),
             el('text', 'Changelog', { fontSize: '15px' }),
+            el('button', 'Sign Up', { backgroundColor: '#000', color: '#fff', padding: '8px 16px', borderRadius: '8px', fontSize: '14px' }),
           ]
         }),
-        el('button', 'Sign Up', { backgroundColor: '#000', color: '#fff', padding: '8px 16px', borderRadius: '8px', fontSize: '14px' }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1700,11 +1707,13 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', alignItems: 'center', gap: '24px' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'Menu', { fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '12px' }),
             el('container', '', { width: '32px', height: '2px', backgroundColor: 'var(--theme-text)' }),
           ]
-        })
+        }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1733,11 +1742,13 @@ export const sectionLibrary: SectionLibraryItem[] = [
               ]
             }),
             el('container', '', { flex: '1', display: 'flex', justifyContent: 'flex-end', gap: '24px' }, {
+              props: { mobileMenu: true },
               children: [
                 el('text', 'Account', { fontWeight: '600' }),
                 el('text', 'Cart (0)', { fontWeight: '600' }),
               ]
-            })
+            }),
+            el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
           ]
         })
       ]
@@ -1769,14 +1780,16 @@ export const sectionLibrary: SectionLibraryItem[] = [
               ]
             }),
             el('container', '', { display: 'flex', gap: '32px' }, {
+              props: { mobileMenu: true },
               children: [
                 el('text', 'Solutions'),
                 el('text', 'Industries'),
                 el('text', 'Services'),
                 el('text', 'Careers'),
+                el('button', 'Contact Sales', { borderStyle: 'solid', borderWidth: '2px', borderColor: 'var(--theme-primary)', padding: '8px 20px', borderRadius: '4px', fontWeight: '700' }),
               ]
             }),
-            el('button', 'Contact Sales', { borderStyle: 'solid', borderWidth: '2px', borderColor: 'var(--theme-primary)', padding: '8px 20px', borderRadius: '4px', fontWeight: '700' }),
+            el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
           ]
         })
       ]
@@ -1799,13 +1812,15 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', gap: '32px', opacity: '0.8' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'Work'),
             el('text', 'Services'),
             el('text', 'Contact'),
+            el('button', 'Start Project', { color: '#000', backgroundColor: '#fff', padding: '10px 20px', borderRadius: '40px', fontSize: '14px', fontWeight: '700' }),
           ]
         }),
-        el('button', 'Start Project', { color: '#000', backgroundColor: '#fff', padding: '10px 20px', borderRadius: '40px', fontSize: '14px', fontWeight: '700' }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1828,7 +1843,14 @@ export const sectionLibrary: SectionLibraryItem[] = [
             el('heading', 'Dashboard', { fontSize: '18px', fontWeight: '700' }),
           ]
         }),
-        el('container', '', { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--theme-primary)' }),
+        el('container', '', { display: 'flex', gap: '32px', alignItems: 'center' }, {
+          props: { mobileMenu: true },
+          children: [
+            el('text', 'Help'),
+            el('button', 'Get App', { backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '10px 20px', borderRadius: '20px', fontWeight: '600' }),
+          ]
+        }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1849,16 +1871,16 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', justifyContent: 'center', gap: '32px' }, {
+          props: { mobileMenu: true },
           children: [
             el('text', 'Solutions'),
             el('text', 'Case Studies'),
             el('text', 'Company'),
             el('text', 'Resources'),
+            el('button', 'Enquire', { backgroundColor: 'var(--theme-text)', color: 'var(--theme-background)', padding: '12px 28px' }),
           ]
         }),
-        el('container', '', { display: 'flex', justifyContent: 'flex-end' }, {
-          children: [ el('button', 'Enquire', { backgroundColor: 'var(--theme-text)', color: 'var(--theme-background)', padding: '12px 28px' }) ]
-        })
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
@@ -1872,7 +1894,8 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Centered Nav',
       styles: { padding: '24px 32px', display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', backgroundColor: 'var(--theme-background)' },
       elements: [
-        el('container', '', { display: 'flex', gap: '32px' }, {
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
+          props: { mobileMenu: true }, 
           children: [ el('text', 'Shop'), el('text', 'About') ]
         }),
         el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
@@ -1882,8 +1905,10 @@ export const sectionLibrary: SectionLibraryItem[] = [
           ]
         }),
         el('container', '', { display: 'flex', justifyContent: 'flex-end', gap: '32px' }, {
+          props: { mobileMenu: true },
           children: [ el('text', 'Journal'), el('text', 'Cart (0)') ]
-        })
+        }),
+        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
       ]
     }
   },
