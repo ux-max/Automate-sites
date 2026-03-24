@@ -614,7 +614,24 @@ export const useBuilderStore = create<BuilderState>()(
         // Import template
         importTemplate: (pages: Page[]) => {
           get().saveHistory();
-          set({ pages, activePageId: pages[0]?.id || '' });
+          const clonedPages = pages.map(page => {
+            const newPage = JSON.parse(JSON.stringify(page)) as Page;
+            newPage.id = uuidv4();
+            newPage.sections = newPage.sections.map(s => {
+              s.id = uuidv4();
+              const regenerateElements = (els: CanvasElement[]): CanvasElement[] => {
+                return els.map(oldEl => {
+                  const el = { ...oldEl, id: uuidv4() };
+                  if (el.children) el.children = regenerateElements(el.children);
+                  return el;
+                });
+              };
+              s.elements = regenerateElements(s.elements);
+              return s;
+            });
+            return newPage;
+          });
+          set({ pages: clonedPages, activePageId: clonedPages[0]?.id || '' });
         },
         
         // Getters

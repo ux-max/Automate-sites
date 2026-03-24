@@ -218,15 +218,12 @@ export default function Dashboard() {
                 border: '1px solid var(--border-subtle)', overflow: 'hidden', position: 'relative'
               }}>
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', background: 'var(--bg-tertiary)' }}>
-                  {template.preview.startsWith('/') ? (
-                    <img 
-                      src={template.preview} 
-                      alt={template.name} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                    />
-                  ) : (
-                    template.preview
-                  )}
+                  <img 
+                    src={template.preview} 
+                    alt={template.name} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80'; }}
+                  />
                 </div>
                 <div style={{ 
                   position: 'absolute', inset: 0, background: 'rgba(59, 130, 246, 0.1)', 

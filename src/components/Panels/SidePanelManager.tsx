@@ -21,7 +21,7 @@ import PreviewPanel from '@/components/Panels/PreviewPanel';
 
 const panelTitles: Record<string, string> = {
   sections: 'Section Library',
-  themes: 'Themes & Templates',
+  themes: 'Templates & Themes',
   media: 'Media Library',
   cms: 'Content Management',
   forms: 'Form Submissions',

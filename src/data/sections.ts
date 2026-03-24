@@ -643,7 +643,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
           children: [
             el('container', '', {}, {
               children: [
-                el('heading', 'AUTOMATE', { fontSize: '24px', fontWeight: '900', color: 'var(--theme-primary)', marginBottom: '16px' }),
+                el('container', '', { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }, {
+                  children: [
+                    el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '32px', height: '32px', objectFit: 'contain' }),
+                    el('heading', 'AUTOMATE', { fontSize: '20px', fontWeight: '900', color: 'var(--theme-primary)' }),
+                  ]
+                }),
                 el('text', 'The worlds most flexible no-code website builder. Create anything you can imagine.', { fontSize: '15px', color: 'var(--theme-text-secondary)', maxWidth: '300px' }),
               ]
             }),
@@ -1118,7 +1123,13 @@ export const sectionLibrary: SectionLibraryItem[] = [
     name: 'Simple Row Footer',
     category: 'Footer',
     previewIcon: 'PanelBottom',
-    description: 'Essential navigation and copyright information for the page bottom.', data: { name: 'Footer', styles: { padding: '32px', backgroundColor: 'var(--theme-surface)' }, elements: [ el('container', '', { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }, { children: [ el('heading', 'AUTOMATE', { fontSize: '18px', fontWeight: '900' }), el('text', '© 2026 All Rights Reserved', { fontSize: '14px', opacity: '0.6' }) ] }) ] } },
+    description: 'Essential navigation and copyright information for the page bottom.', data: { name: 'Footer', styles: { padding: '32px', backgroundColor: 'var(--theme-surface)' }, elements: [ el('container', '', { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }, { children: [
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '8px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '24px', height: '24px', objectFit: 'contain' }),
+            el('heading', 'AUTOMATE', { fontSize: '16px', fontWeight: '900' }),
+          ]
+        }), el('text', '© 2026 All Rights Reserved', { fontSize: '14px', opacity: '0.6' }) ] }) ] } },
   { id: 'team-3-col',
     name: 'Classic Team Row',
     category: 'Team',
@@ -1203,7 +1214,14 @@ export const sectionLibrary: SectionLibraryItem[] = [
     name: 'Brand Focus Footer',
     category: 'Footer',
     previewIcon: 'PanelBottom',
-    description: 'Essential navigation and copyright information for the page bottom.', data: { name: 'Foot', styles: { padding: '80px 32px', backgroundColor: 'var(--theme-background)', textAlign: 'center' }, elements: [ el('heading', 'AUTOMATE', { fontSize: '32px', fontWeight: '900', letterSpacing: '4px', marginBottom: '32px' }), el('container', '', { display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '48px' }, { children: [ el('text', 'About'), el('text', 'Features'), el('text', 'Pricing'), el('text', 'Contact') ] }), el('text', '© 2026 Automate Inc. All rights reserved.', { opacity: '0.5', fontSize: '14px' }) ] } },
+    description: 'Essential navigation and copyright information for the page bottom.', data: { name: 'Foot', styles: { padding: '80px 32px', backgroundColor: 'var(--theme-background)', textAlign: 'center' }, elements: [
+        el('container', '', { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '32px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '60px', height: '60px', objectFit: 'contain' }),
+            el('heading', 'AUTOMATE', { fontSize: '28px', fontWeight: '900', letterSpacing: '4px' }),
+          ]
+        }),
+        el('container', '', { display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '48px' }, { children: [ el('text', 'About'), el('text', 'Features'), el('text', 'Pricing'), el('text', 'Contact') ] }), el('text', '© 2026 Automate Inc. All rights reserved.', { opacity: '0.5', fontSize: '14px' }) ] } },
   { id: 'hero-split-image-right',
     name: 'Split Hero (Right Image)',
     category: 'Hero',
@@ -1588,7 +1606,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Navigation',
       styles: { padding: '20px 32px', backgroundColor: 'var(--theme-background)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: 'var(--theme-border)', position: 'sticky', top: '0', zIndex: '100' },
       elements: [
-        el('heading', 'BRAND', { fontSize: '24px', fontWeight: '900', color: 'var(--theme-primary)' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '40px', height: '40px', objectFit: 'contain' }),
+            el('heading', 'BRAND', { fontSize: '22px', fontWeight: '900', color: 'var(--theme-primary)' }),
+          ]
+        }),
         el('container', '', { display: 'flex', gap: '32px' }, {
           children: [
             el('text', 'Features', { fontWeight: '600', cursor: 'pointer' }),
@@ -1616,7 +1639,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Navigation',
       styles: { padding: '32px', backgroundColor: 'var(--theme-background)', textAlign: 'center' },
       elements: [
-        el('heading', 'AUTOMATE', { fontSize: '28px', fontWeight: '900', marginBottom: '24px', letterSpacing: '4px' }),
+        el('container', '', { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '24px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '50px', height: '50px', objectFit: 'contain' }),
+            el('heading', 'AUTOMATE', { fontSize: '24px', fontWeight: '900', letterSpacing: '4px' }),
+          ]
+        }),
         el('container', '', { display: 'flex', justifyContent: 'center', gap: '40px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'var(--theme-border)', paddingTop: '20px' }, {
           children: [
             el('text', 'HOME', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
@@ -1638,7 +1666,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Glass Nav',
       styles: { padding: '16px 32px', position: 'sticky', top: '20px', left: '32px', right: '32px', margin: '0 32px', backgroundColor: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(12px)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)', zIndex: '1000', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.3)' },
       elements: [
-        el('heading', '✨', { fontSize: '24px' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '32px', height: '32px', objectFit: 'contain' }),
+            el('heading', 'Prism', { fontSize: '18px', fontWeight: '700' }),
+          ]
+        }),
         el('container', '', { display: 'flex', gap: '24px' }, {
           children: [
             el('text', 'Product', { fontSize: '15px' }),
@@ -1660,7 +1693,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Minimal Nav',
       styles: { padding: '40px 64px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--theme-background)' },
       elements: [
-        el('heading', 'Studio.', { fontSize: '32px', fontWeight: '300' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '40px', height: '40px', objectFit: 'contain' }),
+            el('heading', 'Studio.', { fontSize: '28px', fontWeight: '300' }),
+          ]
+        }),
         el('container', '', { display: 'flex', alignItems: 'center', gap: '24px' }, {
           children: [
             el('text', 'Menu', { fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '12px' }),
@@ -1688,7 +1726,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
             el('container', '', { flex: '1' }, {
               children: [ el('form', 'Search products...', { width: '250px', padding: '8px', borderRadius: '4px', borderStyle: 'solid', borderWidth: '1px' } as any) ]
             }),
-            el('heading', 'MERCADO', { fontSize: '32px', fontWeight: '900', textAlign: 'center', flex: '1' }),
+            el('container', '', { flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px' }, {
+              children: [
+                el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '40px', height: '40px', objectFit: 'contain' }),
+                el('heading', 'MERCADO', { fontSize: '28px', fontWeight: '900' }),
+              ]
+            }),
             el('container', '', { flex: '1', display: 'flex', justifyContent: 'flex-end', gap: '24px' }, {
               children: [
                 el('text', 'Account', { fontWeight: '600' }),
@@ -1719,7 +1762,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
         }),
         el('container', '', { padding: '20px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: 'var(--shadow-sm)' }, {
           children: [
-            el('heading', 'CORP_GLOBE', { fontWeight: '800', color: 'var(--theme-primary)' }),
+            el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
+              children: [
+                el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '36px', height: '36px', objectFit: 'contain' }),
+                el('heading', 'CORP_GLOBE', { fontSize: '18px', fontWeight: '800', color: 'var(--theme-primary)' }),
+              ]
+            }),
             el('container', '', { display: 'flex', gap: '32px' }, {
               children: [
                 el('text', 'Solutions'),
@@ -1744,7 +1792,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Dark Nav',
       styles: { padding: '24px 32px', backgroundColor: '#0a0a0a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
       elements: [
-        el('heading', 'NOVA', { fontSize: '24px', fontWeight: '800', letterSpacing: '2px' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '32px', height: '32px', objectFit: 'contain' }),
+            el('heading', 'NOVA', { fontSize: '22px', fontWeight: '800', letterSpacing: '2px' }),
+          ]
+        }),
         el('container', '', { display: 'flex', gap: '32px', opacity: '0.8' }, {
           children: [
             el('text', 'Work'),
@@ -1769,7 +1822,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
         el('container', '', { width: '40px', height: '40px', borderRadius: '8px', backgroundColor: 'var(--theme-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }, {
           children: [ el('text', '☰', { fontSize: '20px' }) ]
         }),
-        el('heading', 'Dashboard', { fontSize: '18px', fontWeight: '700' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '28px', height: '28px', objectFit: 'contain' }),
+            el('heading', 'Dashboard', { fontSize: '18px', fontWeight: '700' }),
+          ]
+        }),
         el('container', '', { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--theme-primary)' }),
       ]
     }
@@ -1784,7 +1842,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
       name: 'Split Nav',
       styles: { padding: '40px', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', alignItems: 'center', backgroundColor: 'var(--theme-background)' },
       elements: [
-        el('heading', 'FOLD', { fontWeight: '900' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '36px', height: '36px', objectFit: 'contain' }),
+            el('heading', 'FOLD', { fontSize: '20px', fontWeight: '900' }),
+          ]
+        }),
         el('container', '', { display: 'flex', justifyContent: 'center', gap: '32px' }, {
           children: [
             el('text', 'Solutions'),
@@ -1812,7 +1875,12 @@ export const sectionLibrary: SectionLibraryItem[] = [
         el('container', '', { display: 'flex', gap: '32px' }, {
           children: [ el('text', 'Shop'), el('text', 'About') ]
         }),
-        el('heading', 'ARKIVE', { fontSize: '24px', fontWeight: '900' }),
+        el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
+          children: [
+            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '36px', height: '36px', objectFit: 'contain' }),
+            el('heading', 'ARKIVE', { fontSize: '22px', fontWeight: '900' }),
+          ]
+        }),
         el('container', '', { display: 'flex', justifyContent: 'flex-end', gap: '32px' }, {
           children: [ el('text', 'Journal'), el('text', 'Cart (0)') ]
         })
