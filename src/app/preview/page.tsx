@@ -63,7 +63,7 @@ const formatStyle = (style: any): React.CSSProperties => {
   return formatted;
 };
 
-function PreviewElement({ element, device }: { element: CanvasElement; device: 'desktop' | 'tablet' | 'mobile' }) {
+function PreviewElement({ element, device, isMenuOpen, toggleMenu }: { element: CanvasElement; device: 'desktop' | 'tablet' | 'mobile'; isMenuOpen?: boolean; toggleMenu?: () => void }) {
   // Merge device-specific styles
   const mergedStyles = useMemo(() => {
     const baseFields = element.styles || {};
@@ -87,21 +87,25 @@ function PreviewElement({ element, device }: { element: CanvasElement; device: '
     element.hidden?.mobile ? 'hide-mobile' : '',
   ].filter(Boolean).join(' ');
 
+  const elementClassName = [
+    element.props?.mobileMenu ? 'mobile-menu-content' : '',
+  ].filter(Boolean).join(' ');
+
   const renderContent = () => {
     switch (element.type) {
       case 'heading':
-        return <h2 style={{ margin: 0, fontFamily: 'var(--theme-font-heading)', color: 'var(--theme-heading)', cursor: element.props?.link ? 'pointer' : 'inherit', ...elStyle }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>{element.content}</h2>;
+        return <h2 onClick={(e) => { if (element.props?.link) { e.stopPropagation(); window.location.href = element.props.link as string; } }} style={{ margin: 0, fontFamily: 'var(--theme-font-heading)', color: 'var(--theme-heading)', cursor: element.props?.link ? 'pointer' : 'inherit', ...elStyle }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>{element.content}</h2>;
       case 'text':
-        return <p style={{ margin: 0, fontFamily: 'var(--theme-font-body)', color: 'var(--theme-text)', cursor: element.props?.link ? 'pointer' : 'inherit', ...elStyle }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>{element.content}</p>;
+        return <p onClick={(e) => { if (element.props?.link) { e.stopPropagation(); window.location.href = element.props.link as string; } }} style={{ margin: 0, fontFamily: 'var(--theme-font-body)', color: 'var(--theme-text)', cursor: element.props?.link ? 'pointer' : 'inherit', ...elStyle }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>{element.content}</p>;
       case 'button':
         return (
-          <button style={{ cursor: 'pointer', border: 'none', backgroundColor: 'var(--theme-primary)', color: 'white', fontFamily: 'var(--theme-font-body)', borderRadius: 'var(--theme-radius)', ...elStyle }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>
+          <button onClick={(e) => { if (element.props?.link) { e.stopPropagation(); window.location.href = element.props.link as string; } }} style={{ cursor: 'pointer', border: 'none', backgroundColor: 'var(--theme-primary)', color: 'white', fontFamily: 'var(--theme-font-body)', borderRadius: 'var(--theme-radius)', ...elStyle }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>
             {element.content}
           </button>
         );
       case 'image':
         return (
-          <div style={{ ...elStyle, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '14px' }}>
+          <div onClick={(e) => { if (element.props?.link) { e.stopPropagation(); window.location.href = element.props.link as string; } }} style={{ cursor: element.props?.link ? 'pointer' : 'inherit', ...elStyle, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '14px' }} title={element.props?.link ? `Redirects to: ${element.props.link}` : ''}>
             {element.content ? <img src={element.content} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: elStyle.borderRadius }} /> : '🖼 Image Placeholder'}
           </div>
         );
@@ -135,11 +139,38 @@ function PreviewElement({ element, device }: { element: CanvasElement; device: '
           </div>
         );
       case 'container':
+        const maxLinks = element.props?.maxVisibleLinks ? parseInt(element.props.maxVisibleLinks, 10) : 0;
+        const hasDropdown = maxLinks > 0 && element.children && element.children.length > maxLinks;
+
         return (
-          <div style={{ ...elStyle, flexWrap: 'wrap' }}>
-            {element.children && element.children.length > 0 
-              ? element.children.map(c => <PreviewElement key={c.id} element={c} device={device} />)
-              : <span style={{ color: '#94a3b8', fontSize: '13px' }}>Drop elements here</span>}
+          <div style={{ ...elStyle, flexWrap: 'wrap' }} className={elementClassName}>
+            {hasDropdown && element.children ? (
+              <>
+                {element.children.slice(0, maxLinks).map(c => (
+                  <PreviewElement key={c.id} element={c} device={device} isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+                ))}
+                <div className="nav-dropdown" style={{ display: 'flex', alignItems: 'center', alignSelf: 'stretch' }}>
+                  <span style={{ 
+                    padding: '0 12px', 
+                    fontWeight: '600', 
+                    color: 'var(--theme-text)', 
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%'
+                  }}>More ▼</span>
+                  <div className="nav-dropdown-content">
+                    {element.children.slice(maxLinks).map(c => (
+                      <PreviewElement key={c.id} element={c} device={device} isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : element.children && element.children.length > 0 ? (
+              element.children.map(c => <PreviewElement key={c.id} element={c} device={device} isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />)
+            ) : (
+              <span style={{ color: '#94a3b8', fontSize: '13px' }}>Drop elements here</span>
+            )}
           </div>
         );
       case 'columns':
@@ -181,18 +212,32 @@ function PreviewElement({ element, device }: { element: CanvasElement; device: '
         return <div style={{ height: '48px', ...elStyle }} />;
       case 'list':
         return (
-          <ul style={{ ...elStyle, margin: 0, listStyleType: 'disc', paddingLeft: '24px' }}>
+          <ul style={{ ...elStyle, margin: 0, listStyleType: 'disc', paddingLeft: '24px' }} className={elementClassName}>
             {element.content.split('\n').map((item, i) => (
               <li key={i}>{item}</li>
             ))}
           </ul>
+        );
+      case 'hamburger':
+        return (
+          <div 
+            className="hamburger-toggle" 
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', ...elStyle }}
+            onClick={(e) => { e.stopPropagation(); toggleMenu?.(); }}
+          >
+            <div style={{ fontSize: '24px' }}>{isMenuOpen ? '✕' : '☰'}</div>
+          </div>
         );
       default:
         return <div style={elStyle}>{element.content}</div>;
     }
   };
 
-  return <div className={`canvas-element ${visibilityClass}`}>{renderContent()}</div>;
+  return (
+    <div className={`canvas-element ${visibilityClass} ${elementClassName}`}>
+      {renderContent()}
+    </div>
+  );
 }
 
 const animationVariants: Record<string, { initial: any; animate: any }> = {
@@ -212,6 +257,11 @@ export default function PreviewPage() {
   const theme = useThemeStore(s => s.themes.find(t => t.id === s.activeThemeId) || s.themes[0]);
   const page = pages.find(p => p.id === activePageId);
   const [device, setDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+
+  const toggleSectionMenu = (sectionId: string) => {
+    setOpenMenus(prev => ({ ...prev, [sectionId]: !prev[sectionId] }));
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -241,13 +291,14 @@ export default function PreviewPage() {
   if (!page) return <div style={{ padding: '40px', textAlign: 'center' }}>No page content found.</div>;
 
   return (
-    <div className="responsive-render" style={{ ...themeVars, minHeight: '100vh', background: 'var(--theme-background)', color: 'var(--theme-text)', fontFamily: 'var(--theme-font-body)' }}>
+    <div className="responsive-render preview-mode" style={{ ...themeVars, minHeight: '100vh', background: 'var(--theme-background)', color: 'var(--theme-text)', fontFamily: 'var(--theme-font-body)' }}>
       {page.sections.map(s => {
         const anim = animationVariants[s.styles?.animationType || 'none'] || animationVariants.none;
         return (
           <motion.section 
             key={s.id} 
-            className="canvas-section"
+            id={s.id}
+            className={`canvas-section ${openMenus[s.id] && device === 'mobile' ? 'is-mobile-menu-open' : ''}`}
             style={{ position: 'relative', ...formatStyle(s.styles) }}
             initial={anim.initial}
             animate={anim.animate}
@@ -257,7 +308,15 @@ export default function PreviewPage() {
               ease: 'easeOut'
             }}
           >
-            {s.elements.map(e => <PreviewElement key={e.id} element={e} device={device} />)}
+            {s.elements.map(e => (
+              <PreviewElement 
+                key={e.id} 
+                element={e} 
+                device={device} 
+                isMenuOpen={!!openMenus[s.id]}
+                toggleMenu={() => toggleSectionMenu(s.id)}
+              />
+            ))}
           </motion.section>
         );
       })}

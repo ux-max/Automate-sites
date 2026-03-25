@@ -211,15 +211,42 @@ function RenderElement({ element, sectionId, pageId, isMenuOpen, toggleMenu }: {
           </div>
         );
       case 'container':
+        const maxLinks = element.props?.maxVisibleLinks ? parseInt(element.props.maxVisibleLinks, 10) : 0;
+        const hasDndDropdown = maxLinks > 0 && element.children && element.children.length > maxLinks;
+
         return (
           <div style={{ ...elStyle, flexWrap: 'wrap' }}>
             <SortableContext 
               items={element.children?.map(c => c.id) || []}
               strategy={rectSortingStrategy}
             >
-              {element.children?.map(c => (
-                <RenderElement key={c.id} element={c} sectionId={sectionId} pageId={pageId} />
-              )) || <span style={{ color: '#94a3b8', fontSize: '13px' }}>Drop elements here</span>}
+              {hasDndDropdown && element.children ? (
+                <>
+                  {element.children.slice(0, maxLinks).map((c) => (
+                    <RenderElement key={c.id} element={c} sectionId={sectionId} pageId={pageId} />
+                  ))}
+                  <div className="nav-dropdown" style={{ display: 'flex', alignItems: 'center', alignSelf: 'stretch' }}>
+                    <span style={{ 
+                      padding: '0 12px', 
+                      fontWeight: '600', 
+                      color: 'var(--theme-text)', 
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      height: '100%'
+                    }}>More ▼</span>
+                    <div className="nav-dropdown-content">
+                      {element.children.slice(maxLinks).map((c) => (
+                        <RenderElement key={c.id} element={c} sectionId={sectionId} pageId={pageId} />
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : element.children && element.children.length > 0 ? (
+                element.children.map(c => (
+                  <RenderElement key={c.id} element={c} sectionId={sectionId} pageId={pageId} />
+                ))
+              ) : <span style={{ color: '#94a3b8', fontSize: '13px' }}>Drop elements here</span>}
             </SortableContext>
           </div>
         );
@@ -374,6 +401,7 @@ function RenderSection({ section, pageId }: { section: PageSection; pageId: stri
   return (
     <motion.div
       ref={setNodeRef}
+      id={section.id}
       style={sectionStyle}
       initial={anim.initial}
       animate={anim.animate}

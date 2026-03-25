@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface TeamMember {
   id: string;
@@ -146,7 +147,9 @@ const defaultIntegrations: Integration[] = [
   },
 ];
 
-export const useProjectStore = create<ProjectState>((set) => ({
+export const useProjectStore = create<ProjectState>()(
+  persist(
+    (set) => ({
   projectName: 'My Website',
   projectUrl: 'my-website',
   isPublished: false,
@@ -254,4 +257,14 @@ export const useProjectStore = create<ProjectState>((set) => ({
       ),
     }));
   },
-}));
+}),
+    {
+      name: 'automate-project-storage',
+      partialize: (state) => ({
+        projectName: state.projectName,
+        projectUrl: state.projectUrl,
+        isPublished: state.isPublished,
+      }),
+    }
+  )
+);

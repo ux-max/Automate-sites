@@ -7,6 +7,7 @@ import { Sun, Moon, Plus, Search, Zap, MoreVertical } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useBuilderStore } from '@/store/builderStore';
 import { useProjectsStore } from '@/store/projectsStore';
+import { useProjectStore } from '@/store/projectStore';
 import { templates } from '@/data/templates';
 
 const containerVariants = {
@@ -24,8 +25,9 @@ const itemVariants = {
 
 export default function Dashboard() {
   const router = useRouter();
-  const { createNewProject, importTemplate, themeMode, toggleThemeMode } = useBuilderStore();
+  const { createNewProject, importTemplate, loadProject, themeMode, toggleThemeMode } = useBuilderStore();
   const { projects } = useProjectsStore();
+  const { setProjectName } = useProjectStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [mounted, setMounted] = useState(false);
@@ -42,6 +44,7 @@ export default function Dashboard() {
 
   const handleStartBlank = () => {
     createNewProject();
+    setProjectName('Untitled Website');
     router.push('/builder');
   };
 
@@ -49,12 +52,14 @@ export default function Dashboard() {
     const template = templates.find(t => t.id === templateId);
     if (template) {
       importTemplate(template.pages);
+      setProjectName(`${template.name} Site`);
       router.push('/builder');
     }
   };
 
   const handleOpenProject = (project: any) => {
-    importTemplate(project.pages);
+    loadProject(project.pages);
+    setProjectName(project.name);
     router.push('/builder');
   };
 

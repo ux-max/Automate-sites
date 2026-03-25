@@ -99,27 +99,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
       ]
     }
   },
-  {
-    id: 'hero-newsletter',
-    name: 'Newsletter Hero',
-    category: 'Hero',
-    previewIcon: 'Send',
-    description: 'A compact subscription-focused section designed to capture leads and grow your newsletter audience.',
-    data: {
-      name: 'Newsletter Hero',
-      styles: { padding: '100px 32px', backgroundColor: 'var(--theme-surface)', textAlign: 'center' },
-      elements: [
-        el('heading', 'The Weekly Digest', { fontSize: '36px', fontWeight: '800', marginBottom: '16px' }),
-        el('text', 'Get the latest tech news and builder tips delivered to your inbox.', { fontSize: '16px', color: 'var(--theme-text-secondary)', marginBottom: '32px' }),
-        el('container', '', { display: 'flex', gap: '8px', maxWidth: '400px', margin: '0 auto' }, {
-          children: [
-            el('form', 'Email Address', { flex: '1', padding: '12px', borderRadius: '6px', backgroundColor: 'var(--theme-background)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--theme-border)' } as any),
-            el('button', 'Subscribe', { backgroundColor: 'var(--theme-primary)', color: '#ffffff', padding: '12px 24px', borderRadius: '6px' }),
-          ]
-        })
-      ]
-    }
-  },
 
   // --- FEATURES ---
   {
@@ -364,11 +343,11 @@ export const sectionLibrary: SectionLibraryItem[] = [
       elements: [
         el('container', '', { display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '48px', alignItems: 'center' }, {
           children: [
-             el('heading', 'LOGO 1', { fontSize: '20px', fontWeight: '800', color: '#94a3b8' }),
-             el('heading', 'LOGO 2', { fontSize: '20px', fontWeight: '800', color: '#94a3b8' }),
-             el('heading', 'LOGO 3', { fontSize: '20px', fontWeight: '800', color: '#94a3b8' }),
-             el('heading', 'LOGO 4', { fontSize: '20px', fontWeight: '800', color: '#94a3b8' }),
-             el('heading', 'LOGO 5', { fontSize: '20px', fontWeight: '800', color: '#94a3b8' }),
+             el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { height: '32px', objectFit: 'contain', opacity: '0.6' }),
+             el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { height: '32px', objectFit: 'contain', opacity: '0.6' }),
+             el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { height: '32px', objectFit: 'contain', opacity: '0.6' }),
+             el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { height: '32px', objectFit: 'contain', opacity: '0.6' }),
+             el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { height: '32px', objectFit: 'contain', opacity: '0.6' }),
           ]
         })
       ]
@@ -597,36 +576,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     }
   },
 
-  // --- NEWSLETTER ---
-  {
-    id: 'newsletter-compact',
-    name: 'Compact Newsletter',
-    category: 'Newsletter',
-    previewIcon: 'Mail',
-    description: 'An inline email capture form designed to fit seamlessly between other sections.',
-    data: {
-      name: 'Newsletter',
-      styles: { padding: '40px', backgroundColor: 'var(--theme-surface)', borderRadius: '12px', margin: '40px 32px' },
-      elements: [
-        el('container', '', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }, {
-          children: [
-            el('container', '', { flex: '1' }, {
-              children: [
-                el('heading', 'Stay in the Loop', { fontSize: '24px', fontWeight: '700' }),
-                el('text', 'Join our newsletter and never miss an update.', { fontSize: '15px', opacity: '0.8' }),
-              ]
-            }),
-            el('container', '', { display: 'flex', gap: '8px', minWidth: '300px' }, {
-              children: [
-                el('form', 'Email Address', { flex: '1', padding: '10px', borderRadius: '6px', backgroundColor: 'var(--theme-background)' } as any),
-                el('button', 'Join', { backgroundColor: 'var(--theme-primary)', color: '#ffffff', padding: '10px 24px', borderRadius: '6px' }),
-              ]
-            })
-          ]
-        })
-      ]
-    }
-  },
 
   // --- FOOTER ---
   {
@@ -1032,44 +981,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
   },
 
   // --- UNIQUE STATS ---
-  {
-    id: 'stats-bars',
-    name: 'Progress Metrics',
-    category: 'Stats',
-    previewIcon: 'BarChart',
-    description: 'Engaging metrics and numbers to highlight your success.',
-    data: {
-      name: 'Performance Stats',
-      styles: { padding: '80px 32px', backgroundColor: 'var(--theme-background)' },
-      elements: [
-        el('heading', 'System Performance', { fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '48px' }),
-        el('container', '', { maxWidth: '800px', margin: '0 auto' }, {
-           children: [
-             el('container', '', { marginBottom: '32px' }, {
-               children: [
-                 el('container', '', { display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }, {
-                   children: [ el('text', 'Uptime Score', { fontWeight: '600' }), el('text', '99.99%') ]
-                 }),
-                 el('container', '', { height: '8px', backgroundColor: 'var(--theme-surface)', borderRadius: '4px' }, {
-                   children: [ el('container', '', { height: '100%', width: '99%', backgroundColor: 'var(--theme-primary)', borderRadius: '4px' }) ]
-                 })
-               ]
-             }),
-             el('container', '', { marginBottom: '32px' }, {
-               children: [
-                 el('container', '', { display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }, {
-                   children: [ el('text', 'Customer Satisfaction', { fontWeight: '600' }), el('text', '98%') ]
-                 }),
-                 el('container', '', { height: '8px', backgroundColor: 'var(--theme-surface)', borderRadius: '4px' }, {
-                   children: [ el('container', '', { height: '100%', width: '98%', backgroundColor: 'var(--theme-primary)', borderRadius: '4px' }) ]
-                 })
-               ]
-             })
-           ]
-        })
-      ]
-    }
-  },
 
   // --- UNIQUE PRICING ---
   {
@@ -1145,11 +1056,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     category: 'Portfolio',
     previewIcon: 'Image',
     description: 'Showcase your best work and case studies.', data: { name: 'Port', styles: { padding: '40px' }, elements: [ el('container', '', { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }, { children: [ el('image', '', { height: '300px' }), el('image', '', { height: '450px' }), el('image', '', { height: '400px' }), el('image', '', { height: '250px' }) ] }) ] } },
-  { id: 'news-overlap',
-    name: 'Overlap Newsletter',
-    category: 'Newsletter',
-    previewIcon: 'Send',
-    description: 'Forms designed specifically to capture email leads.', data: { name: 'News', styles: { padding: '60px 32px', backgroundColor: 'var(--theme-primary)' }, elements: [ el('container', '', { backgroundColor: 'var(--theme-surface)', padding: '48px', borderRadius: '24px', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }, { children: [ el('heading', 'Subscribe to our updates', { marginBottom: '24px' }), el('form', 'Email Address', { marginBottom: '16px' } as any), el('button', 'Subscribe', { width: '100%' }) ] }) ] } },
   { id: 'serv-cards',
     name: 'Service Detail Cards',
     category: 'Services',
@@ -1170,11 +1076,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     category: 'Features',
     previewIcon: 'Grid',
     description: 'Highlight the core features and benefits of your product.', data: { name: 'Feat', styles: { padding: '80px 32px' }, elements: [ el('container', '', { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }, { children: [ el('text', '✓ Fast Performance'), el('text', '✓ Secure Host'), el('text', '✓ 24/7 Support'), el('text', '✓ Easy Exports') ] }) ] } },
-  { id: 'team-circles',
-    name: 'Circle Portrait Team',
-    category: 'Team',
-    previewIcon: 'Users',
-    description: 'Introduce your talented team to build personal connections.', data: { name: 'Team', styles: { padding: '80px 32px' }, elements: [ el('container', '', { display: 'flex', justifyContent: 'center', gap: '32px' }, { children: [ el('image', '', { width: '100px', height: '100px', borderRadius: '50%' }), el('image', '', { width: '100px', height: '100px', borderRadius: '50%' }), el('image', '', { width: '100px', height: '100px', borderRadius: '50%' }) ] }) ] } },
   { id: 'stats-dark',
     name: 'Dark Mode Stats',
     category: 'Stats',
@@ -1185,11 +1086,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     category: 'Portfolio',
     previewIcon: 'Image',
     description: 'Showcase your best work and case studies.', data: { name: 'Port', styles: { padding: '40px' }, elements: [ el('container', '', { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }, { children: [ el('image', '', { height: '400px' }), el('image', '', { height: '400px' }) ] }) ] } },
-  { id: 'faq-bordered',
-    name: 'Bordered FAQ Box',
-    category: 'FAQ',
-    previewIcon: 'HelpCircle',
-    description: 'Answer common customer questions to reduce friction.', data: { name: 'FAQ', styles: { padding: '80px 32px' }, elements: [ el('container', '', { borderWidth: '1px', borderStyle: 'solid', padding: '48px', borderRadius: '24px' }, { children: [ el('heading', 'FAQ', { marginBottom: '32px' }), el('heading', 'Question 1', { fontSize: '18px' }), el('text', 'Answer 1') ] }) ] } },
   { id: 'cta-glassmorphism',
     name: 'Glass CTA',
     category: 'CTA',
@@ -1200,11 +1096,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     category: 'Services',
     previewIcon: 'Briefcase',
     description: 'Detail the specific services or solutions you offer.', data: { name: 'Serv', styles: { padding: '80px 32px', backgroundColor: 'var(--theme-background)' }, elements: [ el('container', '', { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }, { children: [ el('image', '', { width: '100%', height: '400px', borderRadius: '12px' }), el('container', '', {}, { children: [ el('heading', 'Tailored Service', { fontSize: '32px', fontWeight: '800', marginBottom: '16px' }), el('text', 'We provide bespoke solutions for your specific business needs.', { fontSize: '18px', opacity: '0.8' }) ] }) ] }) ] } },
-  { id: 'news-minimal-row',
-    name: 'Minimal Row Newsletter',
-    category: 'Newsletter',
-    previewIcon: 'Send',
-    description: 'Forms designed specifically to capture email leads.', data: { name: 'News', styles: { padding: '32px', backgroundColor: 'var(--theme-surface)' }, elements: [ el('container', '', { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }, { children: [ el('heading', 'Subscribe to our newsletter', { fontSize: '20px' }), el('container', '', { display: 'flex', gap: '8px' }, { children: [ el('form', 'Email Address', { width: '250px' } as any), el('button', 'Join') ] }) ] }) ] } },
   { id: 'cont-cards',
     name: 'Direct Contact Cards',
     category: 'Contact',
@@ -1227,11 +1118,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     category: 'Hero',
     previewIcon: 'Sparkles',
     description: 'A powerful top area to instantly capture attention.', data: { name: 'Hero', styles: { padding: '100px 32px' }, elements: [ el('container', '', { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }, { children: [ el('container', '', {}, { children: [ el('heading', 'Built for Creators', { fontSize: '56px', fontWeight: '800', marginBottom: '24px' }), el('text', 'The best way to build your brand.', { fontSize: '18px', marginBottom: '32px' }), el('button', 'Get Started') ] }), el('image', '', { width: '100%', height: '400px' }) ] }) ] } },
-  { id: 'feat-icons-left',
-    name: 'Features with Left Icons',
-    category: 'Features',
-    previewIcon: 'Grid',
-    description: 'Highlight the core features and benefits of your product.', data: { name: 'Feat', styles: { padding: '80px 32px' }, elements: [ el('container', '', { display: 'flex', flexDirection: 'column', gap: '32px' }, { children: [ el('container', '', { display: 'flex', gap: '24px', alignItems: 'center' }, { children: [ el('text', '🎯', { fontSize: '32px' }), el('container', '', {}, { children: [ el('heading', 'Precision', { fontSize: '20px' }), el('text', 'Pixel perfect design control.') ] }) ] }), el('container', '', { display: 'flex', gap: '24px', alignItems: 'center' }, { children: [ el('text', '☁️', { fontSize: '32px' }), el('container', '', {}, { children: [ el('heading', 'Cloud Sync', { fontSize: '20px' }), el('text', 'Always in sync across devices.') ] }) ] }) ] }) ] } },
   { id: 'team-minimal-grid',
     name: 'Minimal Small Team',
     category: 'Team',
@@ -1256,36 +1142,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
         el('heading', 'Innovate with Confidence', { fontSize: '64px', fontWeight: '900', color: '#fff', position: 'relative', zIndex: '1', marginBottom: '24px' }),
         el('text', 'The platform that scales with your ambition. Built for the modern enterprise.', { fontSize: '20px', color: 'rgba(255,255,255,0.8)', maxWidth: '700px', margin: '0 auto 40px', position: 'relative', zIndex: '1' }),
         el('button', 'Get a Demo', { backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '16px 40px', borderRadius: '8px', position: 'relative', zIndex: '1' }),
-      ]
-    }
-  },
-  {
-    id: 'hero-sidebar-cta',
-    name: 'Floating Card Hero',
-    category: 'Hero',
-    previewIcon: 'Sparkles',
-    description: 'A powerful top area to instantly capture attention.',
-    data: {
-      name: 'Hero',
-      styles: { padding: '120px 32px', backgroundColor: 'var(--theme-surface)' },
-      elements: [
-        el('container', '', { display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '32px', maxWidth: '1200px', margin: '0 auto' }, {
-          children: [
-            el('container', '', {}, {
-              children: [
-                el('heading', 'Design Without Limits', { fontSize: '56px', fontWeight: '800', marginBottom: '24px' }),
-                el('text', 'Everything you need to create, collaborate, and scale your digital products in one place.', { fontSize: '18px', lineHeight: '1.6', marginBottom: '32px' }),
-              ]
-            }),
-            el('container', '', { padding: '40px', backgroundColor: 'var(--theme-background)', borderRadius: '24px', boxShadow: 'var(--shadow-xl)' }, {
-              children: [
-                el('heading', 'Try for Free', { fontSize: '24px', fontWeight: '700', marginBottom: '16px' }),
-                el('form', 'Work Email', { marginBottom: '16px', padding: '12px', borderRadius: '8px', borderStyle: 'solid', borderWidth: '1px' } as any),
-                el('button', 'Get Started Now', { width: '100%', backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '14px', borderRadius: '8px' }),
-              ]
-            })
-          ]
-        })
       ]
     }
   },
@@ -1514,35 +1370,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
   },
 
   // --- CONTACT ---
-  {
-    id: 'contact-split-map',
-    name: 'Map + Split Contact',
-    category: 'Contact',
-    previewIcon: 'Mail',
-    description: 'Easy ways for potential customers to reach your business.',
-    data: {
-      name: 'Contact',
-      styles: { padding: '80px 32px', backgroundColor: 'var(--theme-background)' },
-      elements: [
-        el('container', '', { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'stretch' }, {
-          children: [
-            el('container', '', { backgroundColor: 'var(--theme-surface)', padding: '48px', borderRadius: '24px' }, {
-              children: [
-                el('heading', 'Reach Out to Us', { fontSize: '32px', fontWeight: '800', marginBottom: '24px' }),
-                el('form', 'Full Name', { marginBottom: '16px', padding: '12px', borderRadius: '8px', borderStyle: 'solid', borderWidth: '1px' } as any),
-                el('form', 'Email Address', { marginBottom: '16px', padding: '12px', borderRadius: '8px', borderStyle: 'solid', borderWidth: '1px' } as any),
-                el('form', 'Your Message', { marginBottom: '24px', padding: '12px', borderRadius: '8px', borderStyle: 'solid', borderWidth: '1px', height: '150px' } as any),
-                el('button', 'Send Message', { width: '100%', backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '14px', borderRadius: '8px' }),
-              ]
-            }),
-            el('container', '', { backgroundColor: '#ddd', borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }, {
-              children: [ el('text', 'Map Placeholder', { opacity: '0.4', fontWeight: '700' }) ]
-            })
-          ]
-        })
-      ]
-    }
-  },
 
   // --- CTA ---
   {
@@ -1604,7 +1431,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Navigation',
-      styles: { padding: '20px 32px', backgroundColor: 'var(--theme-background)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: 'var(--theme-border)', position: 'sticky', top: '0', zIndex: '100' },
+      styles: { padding: '20px 32px', backgroundColor: 'var(--theme-background)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: 'var(--theme-border)', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
           children: [
@@ -1640,7 +1467,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Navigation',
-      styles: { padding: '32px', backgroundColor: 'var(--theme-background)', textAlign: 'center' },
+      styles: { padding: '32px', backgroundColor: 'var(--theme-background)', textAlign: 'center', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '24px' }, {
           children: [
@@ -1669,7 +1496,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Glass Nav',
-      styles: { padding: '16px 32px', position: 'sticky', top: '20px', left: '32px', right: '32px', margin: '0 32px', backgroundColor: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(12px)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)', zIndex: '1000', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.3)' },
+      styles: { padding: '16px 32px', position: 'fixed', top: '20px', left: '32px', right: '32px', width: 'calc(100% - 64px)', margin: '0 32px', backgroundColor: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(12px)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)', zIndex: '1000', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.3)' },
       elements: [
         el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
           children: [
@@ -1691,33 +1518,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     }
   },
   {
-    id: 'nav-minimalist-split',
-    name: 'Minimalist Split Nav',
-    category: 'Header',
-    previewIcon: 'PanelTop',
-    description: 'Top navigation bars for easy site exploration.',
-    data: {
-      name: 'Minimal Nav',
-      styles: { padding: '40px 64px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--theme-background)' },
-      elements: [
-        el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
-          children: [
-            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '40px', height: '40px', objectFit: 'contain' }),
-            el('heading', 'Studio.', { fontSize: '28px', fontWeight: '300' }),
-          ]
-        }),
-        el('container', '', { display: 'flex', alignItems: 'center', gap: '24px' }, {
-          props: { mobileMenu: true },
-          children: [
-            el('text', 'Menu', { fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '12px' }),
-            el('container', '', { width: '32px', height: '2px', backgroundColor: 'var(--theme-text)' }),
-          ]
-        }),
-        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
-      ]
-    }
-  },
-  {
     id: 'nav-ecommerce-full',
     name: 'E-commerce Header',
     category: 'Header',
@@ -1725,7 +1525,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Shop Header',
-      styles: { backgroundColor: 'var(--theme-background)' },
+      styles: { backgroundColor: 'var(--theme-background)', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { padding: '10px 32px', backgroundColor: 'var(--theme-primary)', color: '#fff', textAlign: 'center', fontSize: '13px', fontWeight: '600' }, {
           children: [ el('text', 'FREE SHIPPING ON ALL ORDERS OVER $100') ]
@@ -1762,7 +1562,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Corporate Nav',
-      styles: { backgroundColor: 'var(--theme-background)' },
+      styles: { backgroundColor: 'var(--theme-background)', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { padding: '8px 32px', backgroundColor: 'var(--theme-surface)', display: 'flex', justifyContent: 'flex-end', gap: '24px', fontSize: '12px', opacity: '0.8' }, {
           children: [
@@ -1803,7 +1603,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Dark Nav',
-      styles: { padding: '24px 32px', backgroundColor: '#0a0a0a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+      styles: { padding: '24px 32px', backgroundColor: '#0a0a0a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
           children: [
@@ -1825,36 +1625,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     }
   },
   {
-    id: 'nav-app-style',
-    name: 'Mobile App Style Nav',
-    category: 'Header',
-    previewIcon: 'PanelTop',
-    description: 'Top navigation bars for easy site exploration.',
-    data: {
-      name: 'App Nav',
-      styles: { padding: '16px 24px', backgroundColor: 'var(--theme-background)', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: 'var(--theme-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
-      elements: [
-        el('container', '', { width: '40px', height: '40px', borderRadius: '8px', backgroundColor: 'var(--theme-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }, {
-          children: [ el('text', '☰', { fontSize: '20px' }) ]
-        }),
-        el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
-          children: [
-            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '28px', height: '28px', objectFit: 'contain' }),
-            el('heading', 'Dashboard', { fontSize: '18px', fontWeight: '700' }),
-          ]
-        }),
-        el('container', '', { display: 'flex', gap: '32px', alignItems: 'center' }, {
-          props: { mobileMenu: true },
-          children: [
-            el('text', 'Help'),
-            el('button', 'Get App', { backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '10px 20px', borderRadius: '20px', fontWeight: '600' }),
-          ]
-        }),
-        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
-      ]
-    }
-  },
-  {
     id: 'nav-side-logo-split',
     name: 'Asymmetric Split Nav',
     category: 'Header',
@@ -1862,7 +1632,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Split Nav',
-      styles: { padding: '40px', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', alignItems: 'center', backgroundColor: 'var(--theme-background)' },
+      styles: { padding: '40px', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', alignItems: 'center', backgroundColor: 'var(--theme-background)', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { display: 'flex', alignItems: 'center', gap: '10px' }, {
           children: [
@@ -1892,7 +1662,7 @@ export const sectionLibrary: SectionLibraryItem[] = [
     description: 'Top navigation bars for easy site exploration.',
     data: {
       name: 'Centered Nav',
-      styles: { padding: '24px 32px', display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', backgroundColor: 'var(--theme-background)' },
+      styles: { padding: '24px 32px', display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', backgroundColor: 'var(--theme-background)', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
       elements: [
         el('container', '', { display: 'flex', alignItems: 'center', gap: '12px' }, {
           props: { mobileMenu: true }, 
@@ -1912,129 +1682,38 @@ export const sectionLibrary: SectionLibraryItem[] = [
       ]
     }
   },
-  { id: 'u-4',
-    name: 'Client Logo Grid (Dark)',
-    category: 'Logos',
-    previewIcon: 'Shield',
-    description: 'Display your trusted partners and prominent clients.', data: { name: 'Logos', styles: { backgroundColor: '#000' } } },
-  { id: 'u-5',
-    name: 'Testimonial (Big Image Left)',
-    category: 'Testimonials',
-    previewIcon: 'MessageSquare',
-    description: 'Build trust with social proof and customer stories.', data: { name: 'Testimonial', elements: [ el('container', '', { display: 'grid', gridTemplateColumns: '1fr 1fr' }) ] } },
-  { id: 'u-6',
-    name: 'Testimonial (Background Image)',
-    category: 'Testimonials',
-    previewIcon: 'MessageSquare',
-    description: 'Build trust with social proof and customer stories.', data: { name: 'Testimonial', styles: { backgroundImage: 'url()' } } },
-  { id: 'u-7',
-    name: 'Service Block (Icon Right)',
-    category: 'Services',
-    previewIcon: 'Briefcase',
-    description: 'Detail the specific services or solutions you offer.', data: { name: 'Service', elements: [ el('container', '', { display: 'flex', flexDirection: 'row-reverse' }) ] } },
-  { id: 'u-8',
-    name: 'Service Block (Vertical Stack)',
-    category: 'Services',
-    previewIcon: 'Briefcase',
-    description: 'Detail the specific services or solutions you offer.', data: { name: 'Service', elements: [ el('container', '', { display: 'flex', flexDirection: 'column' }) ] } },
-  { id: 'u-9',
-    name: 'Pricing (Annual/Monthly Toggle UI)',
-    category: 'Pricing',
-    previewIcon: 'CreditCard',
-    description: 'Clear pricing plans to convert visitors into customers.', data: { name: 'Pricing', elements: [ el('container', '', { display: 'flex', justifyContent: 'center' }) ] } },
   { id: 'u-10',
     name: 'Pricing High-Tier Card Only',
     category: 'Pricing',
     previewIcon: 'CreditCard',
     description: 'Clear pricing plans to convert visitors into customers.', data: { name: 'Pricing', elements: [ el('container', '', { maxWidth: '400px' }) ] } },
-  { id: 'u-11',
-    name: 'Team (3-Column Bio)',
-    category: 'Team',
-    previewIcon: 'Users',
-    description: 'Introduce your talented team to build personal connections.', data: { name: 'Team', elements: [ el('container', '', { display: 'grid' }) ] } },
   { id: 'u-12',
     name: 'Portfolio (Featured Full-Width)',
     category: 'Portfolio',
     previewIcon: 'Image',
     description: 'Showcase your best work and case studies.', data: { name: 'Portfolio', elements: [ el('image', '', { width: '100%' }) ] } },
-  { id: 'u-13',
-    name: 'FAQ (Card Style Grid)',
-    category: 'FAQ',
-    previewIcon: 'HelpCircle',
-    description: 'Answer common customer questions to reduce friction.', data: { name: 'FAQ', elements: [ el('container', '', { display: 'grid' }) ] } },
-  { id: 'u-14',
-    name: 'Contact (Banner Style Info)',
-    category: 'Contact',
-    previewIcon: 'Mail',
-    description: 'Easy ways for potential customers to reach your business.', data: { name: 'Contact', elements: [ el('container', '', { display: 'flex' }) ] } },
-  { id: 'u-15',
-    name: 'Footer (Minimal Social Bar)',
-    category: 'Footer',
-    previewIcon: 'PanelBottom',
-    description: 'Essential navigation and copyright information for the page bottom.', data: { name: 'Footer', elements: [ el('container', '', { display: 'flex' }) ] } },
-  { id: 'u-16',
-    name: 'Footer (4-Column Mega)',
-    category: 'Footer',
-    previewIcon: 'PanelBottom',
-    description: 'Essential navigation and copyright information for the page bottom.', data: { name: 'Footer', elements: [ el('container', '', { display: 'grid' }) ] } },
-  { id: 'u-17',
-    name: 'Newsletter (Floating Card)',
-    category: 'Newsletter',
-    previewIcon: 'Send',
-    description: 'Forms designed specifically to capture email leads.', data: { name: 'Newsletter', styles: { margin: '-30px auto' } } },
-  { id: 'u-18',
-    name: 'Hero (Large Text Reveal)',
-    category: 'Hero',
-    previewIcon: 'Sparkles',
-    description: 'A powerful top area to instantly capture attention.', data: { name: 'Hero', elements: [ el('heading', 'REVEAL', { fontSize: '100px' }) ] } },
-  { id: 'u-19',
-    name: 'Hero (Product Showcase)',
-    category: 'Hero',
-    previewIcon: 'Sparkles',
-    description: 'A powerful top area to instantly capture attention.', data: { name: 'Hero', elements: [ el('container', '', { display: 'flex' }) ] } },
-  { id: 'u-20',
-    name: 'Feature (Icon Grid Small)',
-    category: 'Features',
-    previewIcon: 'Grid',
-    description: 'Highlight the core features and benefits of your product.', data: { name: 'Features', elements: [ el('container', '', { display: 'grid' }) ] } },
-  { id: 'u-21',
-    name: 'Stats (Ticker Style)',
-    category: 'Stats',
-    previewIcon: 'BarChart',
-    description: 'Engaging metrics and numbers to highlight your success.', data: { name: 'Stats', elements: [ el('container', '', { display: 'flex' }) ] } },
-  { id: 'u-22',
-    name: 'CTA (Bottom Reveal)',
-    category: 'CTA',
-    previewIcon: 'Target',
-    description: 'Strong calls to action to drive conversions.', data: { name: 'CTA', styles: { position: 'sticky', bottom: '0' } } },
-  { id: 'u-23',
-    name: 'CTA (Inline Text)',
-    category: 'CTA',
-    previewIcon: 'Target',
-    description: 'Strong calls to action to drive conversions.', data: { name: 'CTA', elements: [ el('text', 'Ready?') ] } },
-  { id: 'u-24',
-    name: 'Content (Image with Caption)',
-    category: 'Content',
-    previewIcon: 'FileText',
-    description: 'Clean typography blocks for your main text and narrative.', data: { name: 'Content', elements: [ el('image', ''), el('text', 'Caption') ] } },
-  { id: 'u-25',
-    name: 'Content (Quote Block)',
-    category: 'Content',
-    previewIcon: 'FileText',
-    description: 'Clean typography blocks for your main text and narrative.', data: { name: 'Content', elements: [ el('text', '"Quote"', { fontSize: '30px' }) ] } },
   {
-    id: 'hero-product-os',
-    name: 'OS Style Product Hero',
-    category: 'Hero',
+    id: 'news-premium-glass',
+    name: 'Premium Glass Newsletter',
+    category: 'Newsletter',
     previewIcon: 'Sparkles',
-    description: 'A powerful top area to instantly capture attention.',
+    description: 'A sophisticated glassmorphism-based newsletter section for ultra-modern websites.',
     data: {
-      name: 'Product Hero',
-      styles: { padding: '120px 32px', backgroundColor: '#050505', color: '#fff', textAlign: 'center' },
+      name: 'Newsletter',
+      styles: { padding: '120px 32px', background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', textAlign: 'center' },
       elements: [
-        el('text', 'VERSION 2.0 IS HERE', { fontSize: '14px', fontWeight: '700', color: 'var(--theme-primary)', marginBottom: '24px', letterSpacing: '2px' }),
-        el('heading', 'The New Standard for Web Build.', { fontSize: '64px', fontWeight: '800', marginBottom: '32px' }),
-        el('container', '', { maxWidth: '1000px', margin: '0 auto', height: '500px', backgroundColor: '#111', borderRadius: '20px', borderStyle: 'solid', borderWidth: '1px', borderColor: '#333', position: 'relative', overflow: 'hidden' }),
+        el('container', '', { padding: '64px', backgroundColor: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)', borderRadius: '40px', maxWidth: '900px', margin: '0 auto', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }, {
+          children: [
+            el('heading', 'The Insider Report', { fontSize: '42px', fontWeight: '800', color: '#fff', marginBottom: '16px' }),
+            el('text', 'Deeply researched articles on the future of technology and society.', { fontSize: '18px', color: 'rgba(255,255,255,0.8)', marginBottom: '40px' }),
+            el('container', '', { display: 'flex', gap: '12px', maxWidth: '500px', margin: '0 auto' }, {
+              children: [
+                el('form', 'Email Address', { flex: '1', padding: '16px', borderRadius: '16px', backgroundColor: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff' } as any),
+                el('button', 'Subscribe', { backgroundColor: '#fff', color: '#6366f1', padding: '16px 32px', borderRadius: '16px', fontWeight: '800' }),
+              ]
+            })
+          ]
+        })
       ]
     }
   },
@@ -2117,48 +1796,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
              })
            )
         })
-      ]
-    }
-  },
-  {
-    id: 'footer-social-newsletter',
-    name: 'Newsletter & Social Footer',
-    category: 'Footer',
-    previewIcon: 'PanelBottom',
-    description: 'Essential navigation and copyright information for the page bottom.',
-    data: {
-      name: 'Footer',
-      styles: { padding: '80px 32px', backgroundColor: 'var(--theme-surface)' },
-      elements: [
-        el('container', '', { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '64px', marginBottom: '64px' }, {
-          children: [
-            el('container', '', {}, {
-              children: [
-                el('heading', 'Join the Movement', { fontSize: '24px', fontWeight: '800', marginBottom: '16px' }),
-                el('text', 'Subscribe to get the latest updates and exclusive offers.', { marginBottom: '24px', color: 'var(--theme-text-secondary)' }),
-                el('container', '', { display: 'flex', gap: '8px' }, {
-                  children: [
-                    el('form', 'Email Address', { flex: '1', padding: '12px', borderRadius: '8px' } as any),
-                    el('button', 'Subscribe', { backgroundColor: 'var(--theme-primary)', color: '#fff', padding: '12px 24px', borderRadius: '8px' }),
-                  ]
-                })
-              ]
-            }),
-            el('container', '', { textAlign: 'right' }, {
-              children: [
-                el('heading', 'Follow Us', { fontSize: '20px', fontWeight: '700', marginBottom: '24px' }),
-                el('container', '', { display: 'flex', justifyContent: 'flex-end', gap: '16px' }, {
-                  children: [
-                     el('button', 'TW', { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--theme-background)' }),
-                     el('button', 'LI', { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--theme-background)' }),
-                     el('button', 'IG', { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--theme-background)' }),
-                  ]
-                })
-              ]
-            })
-          ]
-        }),
-        el('text', '© 2026 Automate. All rights reserved.', { textAlign: 'center', opacity: '0.5', fontSize: '14px' }),
       ]
     }
   },

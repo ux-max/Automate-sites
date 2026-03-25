@@ -1,7 +1,7 @@
 'use client';
 
 import { useBuilderStore } from '@/store/builderStore';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Copy } from 'lucide-react';
 
 export default function PropertiesPanel() {
   const { 
@@ -9,12 +9,16 @@ export default function PropertiesPanel() {
     selectedSectionId,
     activePageId, 
     updateElement, 
+    duplicateElement,
     deleteElement, 
     updateSection,
     deleteSection,
     getSelectedElement,
-    getSelectedSection
+    getSelectedSection,
+    pages
   } = useBuilderStore();
+  
+  const activePage = pages.find(p => p.id === activePageId);
   
   const selectedEl = getSelectedElement();
   const selectedSec = getSelectedSection();
@@ -58,6 +62,26 @@ export default function PropertiesPanel() {
 
     const sectionImages = findImagesRecursively(selectedSec.elements);
     const sectionForms = findFormsRecursively(selectedSec.elements);
+
+    const findNavContainerRecursively = (elements: any[]): any | null => {
+      for (const el of elements) {
+        if (el.type === 'container' && el.props?.mobileMenu) return el;
+        if (el.children) {
+          const found = findNavContainerRecursively(el.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    const navContainer = findNavContainerRecursively(selectedSec.elements);
+    const isNavbar = selectedSec.elements.some(el => {
+      if (el.type === 'hamburger') return true;
+      if (el.children) {
+        const hasHam = (els: any[]): boolean => els.some(e => e.type === 'hamburger' || (e.children && hasHam(e.children)));
+        return hasHam(el.children);
+      }
+      return false;
+    });
 
     return (
       <div className="properties-panel">
@@ -133,6 +157,28 @@ export default function PropertiesPanel() {
                     />
                   </div>
                 ))}
+              </div>
+            )}
+
+            {isNavbar && navContainer && (
+              <div style={{ marginTop: '16px', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
+                <div className="property-group-title" style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-tertiary)', marginBottom: '12px' }}>
+                  Navigation Dropdown
+                </div>
+                <div className="property-row">
+                  <label style={{ fontSize: '12px' }}>Visible Links Limit</label>
+                  <input 
+                    type="number" 
+                    className="input input-sm" 
+                    value={navContainer.props?.maxVisibleLinks || ''} 
+                    onChange={e => updateElement(activePageId, selectedSec.id, navContainer.id, { props: { ...navContainer.props, maxVisibleLinks: e.target.value } })}
+                    placeholder="Show all links (e.g. 3)" 
+                    min="0"
+                  />
+                </div>
+                <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '8px', lineHeight: '1.4' }}>
+                  Set a limit to automatically group remaining links into a "More ▼" dropdown menu.
+                </div>
               </div>
             )}
           </div>
@@ -259,9 +305,14 @@ export default function PropertiesPanel() {
     <div className="properties-panel">
       <div className="properties-header">
         <h3>{element.type} Properties</h3>
-        <button className="btn btn-danger btn-sm" onClick={() => deleteElement(activePageId, sectionId, element.id)}>
-          <Trash2 size={12} /> Delete
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button className="btn btn-secondary btn-sm" onClick={() => duplicateElement(activePageId, sectionId, element.id)}>
+            <Copy size={12} /> Duplicate
+          </button>
+          <button className="btn btn-danger btn-sm" onClick={() => deleteElement(activePageId, sectionId, element.id)}>
+            <Trash2 size={12} /> Delete
+          </button>
+        </div>
       </div>
       <div className="properties-content">
         {/* Content */}
@@ -274,17 +325,60 @@ export default function PropertiesPanel() {
               <input className="input" value={element.content} onChange={e => updateContent(e.target.value)} />
             )}
             
-            {['button', 'text', 'heading'].includes(element.type) && (
-              <div className="property-row mt-3">
-                <label>Link (URL)</label>
-                <input 
-                  className="input input-sm" 
-                  value={(element.props?.link as string) || ''} 
-                  onChange={e => updateProp('link', e.target.value)} 
-                  placeholder="https://example.com"
-                />
-              </div>
-            )}
+            {['button', 'text', 'heading'].includes(element.type) && (() => {
+              const linkValue = (element.props?.link as string) || '';
+              const isSectionLink = linkValue.startsWith('#') && activePage?.sections.some(s => `#${s.id}` === linkValue);
+              const linkType = isSectionLink ? 'section' : 'url';
+              
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px', borderTop: '1px solid var(--theme-border)', paddingTop: '16px' }}>
+                  <div className="property-row">
+                    <label>Link To</label>
+                    <select 
+                      className="input input-sm" 
+                      value={linkType} 
+                      onChange={e => {
+                        if (e.target.value === 'section' && activePage?.sections.length) {
+                          updateProp('link', `#${activePage.sections[0].id}`);
+                        } else {
+                          updateProp('link', '');
+                        }
+                      }}
+                    >
+                      <option value="url">External URL</option>
+                      <option value="section">Page Section</option>
+                    </select>
+                  </div>
+                  {linkType === 'section' ? (
+                    <div className="property-row">
+                      <label>Section</label>
+                      <select 
+                        className="input input-sm" 
+                        value={linkValue} 
+                        onChange={e => updateProp('link', e.target.value)}
+                      >
+                        <option value="">Select a section...</option>
+                        {activePage?.sections.map(s => (
+                          <option key={s.id} value={`#${s.id}`}>
+                            {s.name || 'Section'}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    <div className="property-row">
+                      <label>URL</label>
+                      <input 
+                        className="input input-sm" 
+                        value={linkValue} 
+                        onChange={e => updateProp('link', e.target.value)} 
+                        placeholder="https://example.com"
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
 
@@ -341,6 +435,24 @@ export default function PropertiesPanel() {
             <div className="property-row">
               <label>Height</label>
               <input className="input input-sm" value={element.styles.lineHeight || ''} onChange={e => updateStyle('lineHeight', e.target.value)} placeholder="1.6" />
+            </div>
+          </div>
+        )}
+
+        {/* Navigation Dropdown Settings */}
+        {element.type === 'container' && (
+          <div className="property-group">
+            <div className="property-group-title">Navigation Dropdown</div>
+            <div className="property-row">
+              <label>Visible Links Limit</label>
+              <input 
+                type="number" 
+                className="input input-sm" 
+                value={element.props?.maxVisibleLinks || ''} 
+                onChange={e => updateProp('maxVisibleLinks', e.target.value)} 
+                placeholder="Show all links (e.g. 3)" 
+                min="0"
+              />
             </div>
           </div>
         )}

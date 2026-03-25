@@ -18,9 +18,6 @@ export default function BuilderTopbar() {
   const { projectName, setProjectName, isPublished, setPublished } = useProjectStore();
   const { addProject, updateProject, projects } = useProjectsStore();
 
-  useEffect(() => {
-    document.body.className = themeMode === 'light' ? 'light-mode' : '';
-  }, [themeMode]);
 
   const handleBack = () => {
     router.push('/dashboard');

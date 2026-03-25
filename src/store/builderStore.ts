@@ -182,6 +182,7 @@ interface BuilderState {
   // Actions - Elements
   addElement: (pageId: string, sectionId: string, element: Omit<CanvasElement, 'id'>) => void;
   updateElement: (pageId: string, sectionId: string, elementId: string, updates: Partial<CanvasElement>) => void;
+  duplicateElement: (pageId: string, sectionId: string, elementId: string) => void;
   deleteElement: (pageId: string, sectionId: string, elementId: string) => void;
   moveElement: (pageId: string, fromId: string, toId: string) => void;
   
@@ -206,6 +207,7 @@ interface BuilderState {
   
   // Actions - Import template
   importTemplate: (pages: Page[]) => void;
+  loadProject: (pages: Page[]) => void;
   
   // Getters
   getActivePage: () => Page | undefined;
@@ -317,7 +319,7 @@ export const useBuilderStore = create<BuilderState>()(
         
         createNewProject: () => {
           const defaultPage = createDefaultPage();
-          set({ pages: [defaultPage], activePageId: defaultPage.id, selectedElementId: null });
+          set({ pages: [defaultPage], activePageId: defaultPage.id, selectedElementId: null, history: [], historyIndex: -1 });
           get().saveHistory();
         },
         
@@ -436,6 +438,41 @@ export const useBuilderStore = create<BuilderState>()(
                   sections: p.sections.map((s: PageSection) =>
                     s.id === sectionId
                       ? { ...s, elements: updateRecursive(s.elements) }
+                      : s
+                  ),
+                }
+                : p
+            ),
+          }));
+          get().saveHistory();
+        },
+        
+        duplicateElement: (pageId: string, sectionId: string, elementId: string) => {
+          const duplicateRecursive = (el: CanvasElement): CanvasElement => ({
+            ...JSON.parse(JSON.stringify(el)),
+            id: uuidv4(),
+            children: el.children ? el.children.map(duplicateRecursive) : undefined
+          });
+
+          const duplicateInList = (els: CanvasElement[]): CanvasElement[] => {
+            const idx = els.findIndex((e: CanvasElement) => e.id === elementId);
+            if (idx !== -1) {
+              const dup = duplicateRecursive(els[idx]);
+              const newEls = [...els];
+              newEls.splice(idx + 1, 0, dup);
+              return newEls;
+            }
+            return els.map((e: CanvasElement) => e.children ? { ...e, children: duplicateInList(e.children) } : e);
+          };
+
+          set((state: BuilderState) => ({
+            pages: state.pages.map((p: Page) =>
+              p.id === pageId
+                ? {
+                  ...p,
+                  sections: p.sections.map((s: PageSection) =>
+                    s.id === sectionId
+                      ? { ...s, elements: duplicateInList(s.elements) }
                       : s
                   ),
                 }
@@ -612,8 +649,17 @@ export const useBuilderStore = create<BuilderState>()(
         },
         
         // Import template
-        importTemplate: (pages: Page[]) => {
+        loadProject: (pages: Page[]) => {
+          set({ 
+            pages: JSON.parse(JSON.stringify(pages)), 
+            activePageId: pages[0]?.id || '',
+            history: [],
+            historyIndex: -1
+          });
           get().saveHistory();
+        },
+        
+        importTemplate: (pages: Page[]) => {
           const clonedPages = pages.map(page => {
             const newPage = JSON.parse(JSON.stringify(page)) as Page;
             newPage.id = uuidv4();
@@ -631,7 +677,13 @@ export const useBuilderStore = create<BuilderState>()(
             });
             return newPage;
           });
-          set({ pages: clonedPages, activePageId: clonedPages[0]?.id || '' });
+          set({ 
+            pages: clonedPages, 
+            activePageId: clonedPages[0]?.id || '',
+            history: [],
+            historyIndex: -1
+          });
+          get().saveHistory();
         },
         
         // Getters

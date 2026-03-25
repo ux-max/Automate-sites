@@ -1047,6 +1047,8 @@ img {
   transition: max-width var(--transition-slow);
   position: relative;
   overflow: visible;
+  /* Trap position: fixed elements within the canvas */
+  transform: translate(0);
 }
 
 .canvas-frame.tablet {
@@ -1126,6 +1128,8 @@ img {
 
 .responsive-render {
   width: 100%;
+  /* Ensure fixed navbars stay within the responsive frame */
+  transform: translate(0);
 }
 
 @media (max-width: 1024px) {
@@ -1299,6 +1303,24 @@ img {
   outline: 2px solid rgba(59, 130, 246, 0.1);
 }
 
+.preview-mode .canvas-section:hover,
+.preview-mode .canvas-section.selected,
+.preview-mode .canvas-element:hover,
+.preview-mode .canvas-element.selected {
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure the 2px dashed default doesn't add extra space in preview */
+.preview-mode .canvas-section {
+  border: none;
+}
+
+.preview-mode .canvas-element {
+  border: none;
+}
+
 .canvas-section.drop-target {
   border-color: var(--primary-400);
   background: rgba(59, 130, 246, 0.05);
@@ -1314,6 +1336,10 @@ img {
 .canvas-element:hover {
   outline: 2px solid rgba(59, 130, 246, 0.4);
   outline-offset: 2px;
+}
+
+.preview-mode .canvas-element:hover {
+  outline: none !important;
 }
 
 .canvas-element.selected {
@@ -2394,4 +2420,40 @@ select.input {
 }
 
 .mt-2 { margin-top: 8px; }
+.mt-2 { margin-top: 8px; }
 .mt-3 { margin-top: 12px; }
+
+/* Navbar Dynamic Dropdown */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.nav-dropdown:hover .nav-dropdown-content {
+  display: flex !important;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: -20px;
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  padding: 8px;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s ease-out;
+}
