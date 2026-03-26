@@ -1460,35 +1460,6 @@ export const sectionLibrary: SectionLibraryItem[] = [
     }
   },
   {
-    id: 'nav-centered-logo',
-    name: 'Centered Logo Nav',
-    category: 'Header',
-    previewIcon: 'PanelTop',
-    description: 'Top navigation bars for easy site exploration.',
-    data: {
-      name: 'Navigation',
-      styles: { padding: '32px', backgroundColor: 'var(--theme-background)', textAlign: 'center', position: 'fixed', top: '0', left: '0', right: '0', zIndex: '100' },
-      elements: [
-        el('container', '', { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '24px' }, {
-          children: [
-            el('image', 'https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?w=100&q=80', { width: '50px', height: '50px', objectFit: 'contain' }),
-            el('heading', 'AUTOMATE', { fontSize: '24px', fontWeight: '900', letterSpacing: '4px' }),
-          ]
-        }),
-        el('container', '', { display: 'flex', justifyContent: 'center', gap: '40px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'var(--theme-border)', paddingTop: '20px' }, {
-          props: { mobileMenu: true },
-          children: [
-            el('text', 'HOME', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
-            el('text', 'COLLECTIONS', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
-            el('text', 'OUR STORY', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
-            el('text', 'CONTACT', { fontSize: '14px', fontWeight: '700', letterSpacing: '1px' }),
-          ]
-        }),
-        el('hamburger', '', { display: 'none' }, { mobileStyles: { display: 'flex' }, hidden: { desktop: true, tablet: true, mobile: false } }),
-      ]
-    }
-  },
-  {
     id: 'nav-glass-sticky',
     name: 'Glassmorphism Sticky Nav',
     category: 'Header',

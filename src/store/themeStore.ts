@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface ThemeConfig {
   id: string;
@@ -126,20 +127,27 @@ const defaultThemes: ThemeConfig[] = [
   },
 ];
 
-export const useThemeStore = create<ThemeState>((set, get) => ({
-  themes: defaultThemes,
-  activeThemeId: 'modern',
-  
-  getActiveTheme: () => {
-    const state = get();
-    return state.themes.find(t => t.id === state.activeThemeId) || state.themes[0];
-  },
-  
-  setActiveTheme: (themeId) => set({ activeThemeId: themeId }),
-  
-  updateTheme: (themeId, updates) => {
-    set(state => ({
-      themes: state.themes.map(t => t.id === themeId ? { ...t, ...updates } : t),
-    }));
-  },
-}));
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set, get) => ({
+      themes: defaultThemes,
+      activeThemeId: 'modern',
+      
+      getActiveTheme: () => {
+        const state = get();
+        return state.themes.find(t => t.id === state.activeThemeId) || state.themes[0];
+      },
+      
+      setActiveTheme: (themeId) => set({ activeThemeId: themeId }),
+      
+      updateTheme: (themeId, updates) => {
+        set(state => ({
+          themes: state.themes.map(t => t.id === themeId ? { ...t, ...updates } : t),
+        }));
+      },
+    }),
+    {
+      name: 'automate-theme-storage',
+    }
+  )
+);

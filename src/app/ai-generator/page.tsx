@@ -194,7 +194,7 @@ export default function AIGeneratorPage() {
   if (!mounted) return null;
 
   return (
-    <div className={`generator-root ${themeMode === 'light' ? 'light-mode' : ''}`} style={{ 
+    <div className="generator-root" style={{ 
       height: '100vh', display: 'flex', flexDirection: 'column',
       background: 'var(--bg-primary)', color: 'var(--text-primary)',
       fontFamily: 'var(--font-sans)',

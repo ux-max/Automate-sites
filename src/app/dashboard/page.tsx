@@ -36,11 +36,6 @@ export default function Dashboard() {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (mounted) {
-      document.body.className = themeMode === 'light' ? 'light-mode' : '';
-    }
-  }, [themeMode, mounted]);
 
   const handleStartBlank = () => {
     createNewProject();

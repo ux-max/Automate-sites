@@ -299,7 +299,7 @@ export default function PreviewPage() {
             key={s.id} 
             id={s.id}
             className={`canvas-section ${openMenus[s.id] && device === 'mobile' ? 'is-mobile-menu-open' : ''}`}
-            style={{ position: 'relative', ...formatStyle(s.styles) }}
+            style={{ position: 'relative', zIndex: openMenus[s.id] ? 1000 : 'auto', ...formatStyle(s.styles) }}
             initial={anim.initial}
             animate={anim.animate}
             transition={{ 
@@ -308,15 +308,55 @@ export default function PreviewPage() {
               ease: 'easeOut'
             }}
           >
-            {s.elements.map(e => (
-              <PreviewElement 
-                key={e.id} 
-                element={e} 
-                device={device} 
-                isMenuOpen={!!openMenus[s.id]}
-                toggleMenu={() => toggleSectionMenu(s.id)}
-              />
-            ))}
+            {device !== 'mobile' ? (
+              s.elements.map(e => (
+                <PreviewElement 
+                  key={e.id} 
+                  element={e} 
+                  device={device} 
+                  isMenuOpen={!!openMenus[s.id]}
+                  toggleMenu={() => toggleSectionMenu(s.id)}
+                />
+              ))
+            ) : (
+              <>
+                {/* Regular elements (not mobile menu items) */}
+                {s.elements.filter(e => !e.props?.mobileMenu && e.type !== 'hamburger').map(e => (
+                  <PreviewElement 
+                    key={e.id} 
+                    element={e} 
+                    device={device} 
+                    isMenuOpen={!!openMenus[s.id]}
+                    toggleMenu={() => toggleSectionMenu(s.id)}
+                  />
+                ))}
+                
+                {/* Explicit Hamburger Toggle */}
+                {s.elements.filter(e => e.type === 'hamburger').map(e => (
+                  <PreviewElement 
+                    key={e.id} 
+                    element={e} 
+                    device={device} 
+                    isMenuOpen={!!openMenus[s.id]}
+                    toggleMenu={() => toggleSectionMenu(s.id)}
+                  />
+                ))}
+
+                {/* Mobile Menu Wrapper */}
+                {openMenus[s.id] && (
+                  <div className="mobile-menu-wrapper">
+                    {s.elements.filter(e => e.props?.mobileMenu).map(e => (
+                      <PreviewElement 
+                        key={e.id} 
+                        element={e} 
+                        device={device} 
+                        isMenuOpen={true}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </motion.section>
         );
       })}

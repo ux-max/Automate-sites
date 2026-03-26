@@ -31,7 +31,7 @@ export default function BuilderPage() {
   }, [saveHistory]);
 
   return (
-    <div className={`builder-container ${themeMode === 'light' ? 'light-mode' : ''}`}>
+    <div className="builder-container">
       <Toaster
         position="top-right"
         toastOptions={{

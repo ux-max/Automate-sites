@@ -359,7 +359,7 @@ function RenderSection({ section, pageId }: { section: PageSection; pageId: stri
     transition,
     opacity: isDragging ? 0.5 : 1,
     position: 'relative' as const,
-    zIndex: isDragging ? 100 : 'auto',
+    zIndex: isDragging ? 100 : (isMobileMenuOpen ? 1000 : 'auto'),
     ...formatStyle(section.styles)
   };
 
@@ -439,16 +439,59 @@ function RenderSection({ section, pageId }: { section: PageSection; pageId: stri
           items={section.elements.map(el => el.id)}
           strategy={rectSortingStrategy}
         >
-          {section.elements.map(el => (
-            <RenderElement 
-              key={el.id} 
-              element={el} 
-              sectionId={section.id} 
-              pageId={pageId} 
-              isMenuOpen={isMobileMenuOpen}
-              toggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            />
-          ))}
+          {deviceView !== 'mobile' ? (
+            section.elements.map(el => (
+              <RenderElement 
+                key={el.id} 
+                element={el} 
+                sectionId={section.id} 
+                pageId={pageId} 
+                isMenuOpen={isMobileMenuOpen}
+                toggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              />
+            ))
+          ) : (
+            <>
+              {/* Regular elements (not mobile menu items) */}
+              {section.elements.filter(el => !el.props?.mobileMenu && el.type !== 'hamburger').map(el => (
+                <RenderElement 
+                  key={el.id} 
+                  element={el} 
+                  sectionId={section.id} 
+                  pageId={pageId} 
+                  isMenuOpen={isMobileMenuOpen}
+                  toggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                />
+              ))}
+
+              {/* Explicit Hamburger Toggle */}
+              {section.elements.filter(el => el.type === 'hamburger').map(el => (
+                <RenderElement 
+                  key={el.id} 
+                  element={el} 
+                  sectionId={section.id} 
+                  pageId={pageId} 
+                  isMenuOpen={isMobileMenuOpen}
+                  toggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                />
+              ))}
+
+              {/* Mobile Menu Wrapper */}
+              {isMobileMenuOpen && (
+                <div className="mobile-menu-wrapper">
+                  {section.elements.filter(el => el.props?.mobileMenu).map(el => (
+                    <RenderElement 
+                      key={el.id} 
+                      element={el} 
+                      sectionId={section.id} 
+                      pageId={pageId} 
+                      isMenuOpen={true}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </SortableContext>
       )}
     </motion.div>
